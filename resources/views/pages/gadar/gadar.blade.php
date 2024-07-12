@@ -14,6 +14,18 @@
 
 @section('style')
     <style>
+        .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+            .card .card-header {
+            background-color: #fff;
+            padding: 30px;
+            border-bottom: 1px solid #ecf3fa;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+        }
         /* Add custom CSS for freezing table header */
         .table-container {
             max-height: 550px; /* Adjust max-height as needed */
@@ -34,7 +46,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Gender and Development Accomplishment Report</h3>
+<h5>Gender and Development Accomplishment Report</h5>
 @endsection
 
 @section('breadcrumb-items')
@@ -80,7 +92,7 @@
                                         <i class="icofont icofont-file-excel"></i>
                                         <span> Generate</span>
                                     </a>
-                                    <a href="{{ url('/gadar-pdf') }}" class="btn btn-outline-primary" target="_blank">Download PDF</a>
+                                    <a id="pdfButton" href="{{ url('/gadar-pdf') }}" class="btn btn-outline-primary" target="_blank">Download PDF</a>
                                     <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View Status" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#statusModal"><i class="icofont icofont-ui-check"></i><span> Status</span></button>
                                     <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"><i class="fa fa-file-photo-o"></i><span> MOVs</span></button>
                                     <button class="btn btn-outline-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><i class="icon-harddrives"></i><span> Logs</span></button>
@@ -102,12 +114,12 @@
                         <th class="border" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px; display:none;">Female</th> -->
                         @foreach ($gadar as $key => $g)
                             @if ($key === 0)
-                                <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Physical Target</th>
+                                <th class="border p-1" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Physical Target</th>
                             @endif
                         @endforeach
                         @foreach ($gadar as $key => $g)
                             @if ($key === 0)
-                            <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Actual Accomplishment</th>
+                            <th class="border p-1" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Actual Accomplishment</th>
                             @endif
                         @endforeach
                         <!-- <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px">Tier 1</th> -->
@@ -630,10 +642,9 @@
                                                     </tr>
                                                 <tbody>
                                                     <tr class="border">
-                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="division" style="border:none; font-size: 14px;" placeholder="Type Here your Section"></input></td>
-                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="section" style=" border:none; font-size: 14px;" placeholder="Type Here your Division"></input></td>
+                                                        <!-- <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="division" style="border:none; font-size: 14px;" placeholder="Type Here your Section"></input></td>
+                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="section" style=" border:none; font-size: 14px;" placeholder="Type Here your Division"></input></td> -->
                                                         <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="file-input" style=" border:none; font-size: 14px;" name="file" type="file" style="border:none;" placeholder="Type Here your Section" multiple></input></td>
-
                                                     </tr>                                        
                                                 </tbody>
                                             </table>
@@ -813,7 +824,7 @@
                 <div class="modal-header">
                             @foreach ($gadar as $key => $g)
                                 @if ($key === 0)
-                                <h5 class="modal-title" id="updatelogsModalLabel">Submitted Status {{$g->year}}</h5>
+                                <h5 class="modal-title" id="updatelogsModalLabel">Status of Submission {{$g->year}}</h5>
                                 <!-- <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">FY {{$g->year}} Actual Accomplishment</th> -->
                                 @endif
                             @endforeach
@@ -1247,8 +1258,8 @@
         var actualActivity = $('#actualActivity').val();
         var justification = $('#justification').val();
         var files = $('#file-input')[0].files;
-        var division = $('#division').val();
-        var section = $('#section').val();
+        // var division = $('#division').val();
+        // var section = $('#section').val();
         var selectedQuarter = $('#quarter').val();
         var remark = $('#remark').val();
         var selectedYear = $('#filter_year').val();
@@ -1277,8 +1288,8 @@
         
         // console.log('actualActivity:', formData.get('actualActivity'));
         // formData.append('gadaractual_id', id);
-        formData.append('division', division);
-        formData.append('section', section);
+        // formData.append('division', division);
+        // formData.append('section', section);
         
         var dataToSend = {
             id: gadar_id,
@@ -1671,6 +1682,27 @@ $(document).ready(function() {
         var exportUrl = baseUrl.replace(':year', selectedYear || 'null').replace(':quarter', selectedQuarter || 'null');
 
         $('#exportButton').attr('href', exportUrl);
+    }
+
+    // Update the href when the select elements change
+    $('#filter_year, #quarter').on('change', function() {
+        updateExportHref();
+    });
+
+    // Initial call to set the href based on initial selections
+    updateExportHref();
+});
+
+$(document).ready(function() {
+    function updateExportHref() {
+        var selectedYear = $('#filter_year').val();
+        var selectedQuarter = $('#quarter').val();
+        var baseUrl = "{{ route('gadar-pdf', ['year' => ':year', 'quarter' => ':quarter']) }}";
+
+        // Replace placeholders with actual values
+        var exportUrl = baseUrl.replace(':year', selectedYear || 'null').replace(':quarter', selectedQuarter || 'null');
+
+        $('#pdfButton').attr('href', exportUrl);
     }
 
     // Update the href when the select elements change

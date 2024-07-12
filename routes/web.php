@@ -58,7 +58,7 @@ Route::prefix('gender_and_development')->group(function () {
     // Route::get('divisionreview', 'DivisionreviewController@index')->name('divisionreview');
     });
 
-    Route::get('/gadar-pdf', 'PDFController@generatePDF')->name('gadar-pdf');
+    Route::get('/gadar-pdf/{year}/{quarter}', 'PDFController@generatePDF')->name('gadar-pdf');
     // Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 //Show OPC
 // Route::get('/opcpage/showopc', 'ShowopcController@index')->name('show');
