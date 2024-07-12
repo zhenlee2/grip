@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PDF;
 use App\Models\Users;
 use App\Models\Gadar;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PDFController extends Controller
 {
@@ -18,7 +18,7 @@ class PDFController extends Controller
         // $pdf = PDF::loadView('pages.gadar.my_pdf', $data)->setPaper('a4', 'portrait');
         // return $pdf->stream('document.pdf');
 
-        $pdf = PDF::loadView('pages.gadar.my_pdf', ['gadar' => $gadar])->setPaper('legal', 'landscape');
+        $pdf = Pdf::loadView('pages.gadar.my_pdf', ['gadar' => $gadar])->setPaper('legal', 'landscape');
     return $pdf->stream('gadar.pdf');
     }
 }
