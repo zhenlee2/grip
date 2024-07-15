@@ -36,7 +36,7 @@
             color: white;
             top: 0;
             background-color: #57bb8a; /* Adjust background color if needed */
-            z-index: 1; /* Ensure it overlays other content properly */
+            /* z-index: 1; Ensure it overlays other content properly */
             border: 1px solid #ccc; /* Add border to table header cells */
             padding: 0px; /* Adjust padding as needed */
             text-align: center; /* Center align text */
@@ -59,12 +59,24 @@
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
+                    <!-- <div class="dropdown-basic">
+                                        <div class="dropdown">
+                                            <button class="dropbtn btn-primary btn-sm" type="button">Dropdown Button <span><i class="icofont icofont-arrow-down"></i></span></button>
+                                            <div class="dropdown-content">
+                                                <a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a href="#">Another Link</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                    </div>  -->
             <div class="card-header" style="padding: 20px;">
                 <div align="center">
                     <div  class="dt-ext table-responsive table-container">
                         <table class="table " style="padding:0px 0px; border:none;">
                             <tr>
                                 <td style="border:none;">
+                                
                                     <select id="filter_year" class="btn btn-outline-primary" >
                                         <option value="" disabled>Select Year</option>
                                         <option value="0000">0000</option>
@@ -88,6 +100,7 @@
                                 </td>
                                 <!-- <td class="col-3" ></td> -->
                                 <td  style="text-align:right; border:none;">
+                                    
                                     <a id="exportButton" class="btn btn-outline-success">
                                         <i class="icofont icofont-file-excel"></i>
                                         <span> Generate</span>
@@ -97,13 +110,15 @@
                                     <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"><i class="fa fa-file-photo-o"></i><span> MOVs</span></button>
                                     <button class="btn btn-outline-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><i class="icon-harddrives"></i><span> Logs</span></button>
                                     <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
+                                    
                                 </td>
                             </tr>
                         </table>
-                    </div>
+                       
                 </div>
             </div>
             <div class="card-body">
+                               
                 <div class="dt-ext table-responsive table-container">
                   <table class="table border table-xs" style="padding: 1px 1px; " >
                      <thead class="sticky-header">

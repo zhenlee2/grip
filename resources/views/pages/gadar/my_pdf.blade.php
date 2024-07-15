@@ -152,7 +152,7 @@
                         <td class="border">{{ number_format($item->total_actualexpen, 2) }}</td>
                         <td class="border">{{ $item->source }}</td>
                         <td class="border">{{ $item->rawresponsible_unit }}</td>
-                        <td class="border">{{ $item->justification }}</td>
+                        <td class="border">{{ $item->justification1 }}</td>
                     </tr>
                     @php
                         $totalBudgetAmountCategory1 += $item->budget_totalamount;
@@ -226,7 +226,7 @@
                         <td class="border">{{ number_format($item->total_actualexpen, 2) }}</td>
                         <td class="border">{{ $item->source }}</td>
                         <td class="border">{{ $item->rawresponsible_unit }}</td>
-                        <td class="border">{{ $item->justification }}</td>
+                        <td class="border">{{ $item->justification1 }}</td>
                     </tr>
                     @php
                         $totalBudgetAmountCategory2 += $item->budget_totalamount;
@@ -300,7 +300,7 @@
                         <td class="border">{{ number_format($item->total_actualexpen, 2) }}</td>
                         <td class="border">{{ $item->source }}</td>
                         <td class="border">{{ $item->rawresponsible_unit }}</td>
-                        <td class="border">{{ $item->justification }}</td>
+                        <td class="border">{{ $item->justification1 }}</td>
                     </tr>
                     @php
                         $totalBudgetAmountCategory3 += $item->budget_totalamount;
