@@ -42,6 +42,42 @@
             text-align: center; /* Center align text */
             vertical-align: middle; /* Center vertical alignment */
         }
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-container, .dropdown-basic {
+            display: flex;
+            align-items: top;
+            gap: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 100px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 @endsection
 
@@ -59,62 +95,49 @@
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
-                    <!-- <div class="dropdown-basic">
-                                        <div class="dropdown">
-                                            <button class="dropbtn btn-primary btn-sm" type="button">Dropdown Button <span><i class="icofont icofont-arrow-down"></i></span></button>
-                                            <div class="dropdown-content">
-                                                <a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a href="#">Another Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                    </div>  -->
             <div class="card-header" style="padding: 20px;">
-                <div align="center">
-                    <div  class="dt-ext table-responsive table-container">
-                        <table class="table " style="padding:0px 0px; border:none;">
-                            <tr>
-                                <td style="border:none;">
-                                
-                                    <select id="filter_year" class="btn btn-outline-primary" >
-                                        <option value="" disabled>Select Year</option>
-                                        <option value="0000">0000</option>
-                                        @foreach ($filteryear as $key => $y)
-                                            <option value="{{$y->year}}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
-                                                {{$y->year}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                <!-- </td>
-                                <td style="text-align:left"> -->
-                                    <select name="quarter" id="quarter" class="btn btn-outline-primary bordered" data-control="select2">
-                                        <option value="" disabled {{ is_null($selectedQuarter) ? 'selected' : '' }}>Select Quarter</option>
-                                        <option value="1" {{ $selectedQuarter == '1' ? 'selected' : '' }}>1st Quarter</option>
-                                        <option value="2" {{ $selectedQuarter == '2' ? 'selected' : '' }}>2nd Quarter</option>
-                                        <option value="3" {{ $selectedQuarter == '3' ? 'selected' : '' }}>3rd Quarter</option>
-                                        <option value="4" {{ $selectedQuarter == '4' ? 'selected' : '' }}>4th Quarter</option>
-                                    </select>
-                                    <!-- <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Quarter</span> -->
-                                    <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</span>
-                                </td>
-                                <!-- <td class="col-3" ></td> -->
-                                <td  style="text-align:right; border:none;">
-                                    
-                                    <a id="exportButton" class="btn btn-outline-success">
-                                        <i class="icofont icofont-file-excel"></i>
-                                        <span> Generate</span>
-                                    </a>
-                                    <a id="pdfButton" href="{{ url('/gadar-pdf') }}" class="btn btn-outline-primary" target="_blank">Download PDF</a>
-                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View Status" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#statusModal"><i class="icofont icofont-ui-check"></i><span> Status</span></button>
-                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"><i class="fa fa-file-photo-o"></i><span> MOVs</span></button>
-                                    <button class="btn btn-outline-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><i class="icon-harddrives"></i><span> Logs</span></button>
-                                    <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
-                                    
-                                </td>
-                            </tr>
-                        </table>
-                       
+                <div class="filter-container">
+                    <div class="select-container">
+                        <select id="filter_year" class="btn btn-outline-primary">
+                            <option value="" disabled>Select Year</option>
+                            <option value="0000">0000</option>
+                            @foreach ($filteryear as $key => $y)
+                                <option value="{{ $y->year }}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
+                                    {{ $y->year }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <select name="quarter" id="quarter" class="btn btn-outline-primary bordered" data-control="select2">
+                            <option value="" disabled {{ is_null($selectedQuarter) ? 'selected' : '' }}>Select Quarter</option>
+                            <option value="1" {{ $selectedQuarter == '1' ? 'selected' : '' }}>1st Quarter</option>
+                            <option value="2" {{ $selectedQuarter == '2' ? 'selected' : '' }}>2nd Quarter</option>
+                            <option value="3" {{ $selectedQuarter == '3' ? 'selected' : '' }}>3rd Quarter</option>
+                            <option value="4" {{ $selectedQuarter == '4' ? 'selected' : '' }}>4th Quarter</option>
+                        </select>
+                        <button class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</button>
+
+                    </div>
+                    
+                    <div class="dropdown-basic">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <div class="dropdown-content">
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#statusModal">Status</a>
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">MOV's</a>
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">Log</a>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <div class="dropdown-content">
+                                <a id="exportButton">Excel</a>
+                                <a id="pdfButton" href="{{ url('/gadar-pdf') }}" target="_blank">PDF</a>
+                            </div>
+                        </div>
+                        <div>
+                        <button class="btn btn-outline-primary " type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

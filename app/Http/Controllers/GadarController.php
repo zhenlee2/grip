@@ -125,6 +125,6 @@ class GadarController extends Controller
 
     public function export($year = null, $quarter = null) 
     {
-        return Excel::download(new GadarDataExport($year, $quarter), 'GAD Accomplishment Report.xlsx');
+        return Excel::download(new GadarDataExport($year, $quarter), "Gender_and_Development_Accomplishment_Report_{$year}_{$quarter}.xlsx");
     }
 }

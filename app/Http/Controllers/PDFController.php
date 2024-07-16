@@ -96,6 +96,6 @@ class PDFController extends Controller
         // $collect = collect($response);
 
         $pdf = Pdf::loadView('pages.gadar.my_pdf', ['gadar' => $response])->setPaper('legal', 'landscape');
-    return $pdf->stream('gadar.pdf');
+        return $pdf->stream("gadar_{$year}_{$quarter}.pdf");
     }
 }
