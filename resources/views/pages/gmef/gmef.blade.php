@@ -5,11 +5,17 @@
 @endsection
 
 @section('style')
+    <style>
+      .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
-<h3>GMEF</h3>
-   <div class="card-toolbar">
+<h3>Gender Mainstreaming Evaluation Framework Tool</h3>
+   <!-- <div class="card-toolbar">
       <div class="input-group flex-nowrap">
             <span class="input-group-text"><i class="bi bi-calendar fs-4"></i></span>
                <div class="overflow-hidden flex-grow-1">
@@ -23,7 +29,7 @@
             <span class="input-group-text bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Year</span>
             <button class="btn btn-sm btn-primary mx-4" id="save_changes_policy">Save Changes</button>
       </div>
-   </div>
+   </div> -->
 @endsection
 
 @section('breadcrumb-items')
@@ -102,7 +108,7 @@
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell1(this, 'score-input', 0)">No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued</td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell1(this, 'score-input', 0.8333333333333333)">Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued</td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell1(this, 'score-input', 1.666666666666667)">Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued</td>
-                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;"><input type="text" id="score-input" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center" placeholder="type score here." disabled></td>
+                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;"><input type="text" id="score-input" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center"  disabled></td>
                                                                             <td class="w-175px border p-1" colspan="2">Enumerate the GAD related policies issued (e.g., policy on setting up GFPS or GAD Office; collection and maintenance of sex-disaggregated database; conduct of organization-wide gender audit; capacity-building plan for GFPS and HR of organization).
                                                                                 <table class="table  table-row-bordered gy-6">
                                                                                     <tr> 

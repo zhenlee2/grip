@@ -56,16 +56,6 @@
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
-         <div class="dropdown-basic">
-                                        <div class="dropdown">
-                                            <button class="dropbtn btn-primary btn-sm" type="button">Dropdown Button <span><i class="icofont icofont-arrow-down"></i></span></button>
-                                            <div class="dropdown-content">
-                                                <a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a href="#">Another Link</a>
-                                            </div>
-                                        </div>
-                                    </div>
          <div class="card-header" style="padding: 20px;">
                 <div align="center">
                     <div  class="dt-ext table-responsive table-container">
@@ -75,14 +65,12 @@
                                     <select id="filter_year" class="btn btn-outline-primary" >
                                         <option value="" disabled>Select Year</option>
                                         <option value="0000">0000</option>
-                                        
+                                        @foreach ($filteryear as $key => $y)
+                                            <option value="{{ $y->year }}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
+                                                {{ $y->year }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                <!-- </td>
-                                <td style="text-align:left"> -->
-                                    <select name="quarter" id="quarter" class="btn btn-outline-primary bordered" data-control="select2">
-                                        
-                                    </select>
-                                    <!-- <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Quarter</span> -->
                                     <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</span>
                                 </td>
                                 <!-- <td class="col-3" ></td> -->
@@ -673,5 +661,39 @@
         }
     });
 
+    $(document).ready(function() {
+    // Define your base URL
+    var BASE_URL = "{{ url('/') }}"; // Assuming your Laravel application is served from the root URL
+
+        $('#btn-filter-year').click(function() {
+            event.preventDefault();
+            
+            // Get the selected value
+            var selectedYear = $('#filter_year').val();
+            // var selectedQuarter = $('#quarter').val();
+            console.log(selectedYear);
+            $.ajax({
+                // Construct the URL by appending the route segment to the base URL
+                url: BASE_URL + '/gender_and_development/gadgpb/year', // Your Laravel route for filtering data
+                method: 'GET',
+                data: {
+                    year: selectedYear
+                    // quarter: selectedQuarter
+                },
+                success: function(response) {
+                    // Handle the filtered data response
+                    window.location.href = "{{ route('gadgpb.year', ['year' => ':year']) }}"
+                    .replace(':year', selectedYear)
+                    // .replace(':quarter', selectedQuarter);
+                    $('#filter_year').text(selectedYear);
+                    // $('#quarter').text(selectedQuarter);
+                    // Update your frontend to display the filtered data
+                },
+                error: function(xhr, status, error) {s
+                    console.error(error);
+                }
+            });
+        });
+    });
 </script>
 @endsection

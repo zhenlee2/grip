@@ -46,6 +46,7 @@ Route::prefix('gender_and_development')->group(function () {
     Route::get('gad', 'GenderDevelopmentController@index')->name('gad');
     Route::get('gmef', 'GmefController@index')->name('gmef');
     Route::get('gadgpb', 'GadgpbController@index')->name('gadgpb');
+    Route::get('gadgpb/{year}', 'GadgpbController@index')->name('gadgpb.year');
     Route::post('gadgpb/upload', 'GadgpbController@upload')->name('gadgpb.upload');
     Route::get('gadar/{year}/{quarter}', 'GadarController@index')->name('gadar.year.quarter');
     Route::get('gadar', 'GadarController@index')->name('gadar');

@@ -28,7 +28,7 @@
         }
         /* Add custom CSS for freezing table header */
         .table-container {
-            max-height: 550px; /* Adjust max-height as needed */
+            max-height: 600px; /* Adjust max-height as needed */
             overflow-y: auto;
         }
         .sticky-header th {
@@ -75,9 +75,6 @@
             display: block;
         }
 
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
     </style>
 @endsection
 
