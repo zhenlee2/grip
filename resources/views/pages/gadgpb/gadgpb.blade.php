@@ -7,8 +7,8 @@
 @endsection
 
 @section('style')
-<style>
-        .page-wrapper .page-body-wrapper .page-title {
+    <style>
+            .page-wrapper .page-body-wrapper .page-title {
             padding-top: 25px;
             padding-bottom: 5px;
         }

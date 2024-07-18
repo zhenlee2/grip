@@ -29,7 +29,7 @@ class GadarController extends Controller
                 $gadar = $showGadar->execute($year,$quarter);
                 $filteryear = $showGadar->execute4();
                 $gadarStatus = $showGadar->execute9($year,$quarter);
-                $gadarlog = $showGadar->execute10($year); //GADAR Log
+                $gadarlog = $showGadar->execute10($year,$quarter); //GADAR Log
                 return view('pages.gadar.gadar',compact('user','gadar', 'selectedYear', 'selectedQuarter', 'filteryear','gadarStatus', 'gadarlog'));
         }else {
             return redirect()->route('login');

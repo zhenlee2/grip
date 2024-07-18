@@ -18,7 +18,10 @@ Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Route::post('auth/login', 'AuthController@login_request')->name('auth.login');
 Route::get('auth/logout', 'AuthController@logout_request')->name('auth.logout');
 
-//PAGES
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 //PERFORMANCE CONTRACT
 Route::prefix('performance_contract')->group(function () {

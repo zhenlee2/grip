@@ -76,6 +76,52 @@
         }
 
     </style>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: #d64dcf;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            outline: 1px solid #d64dcf; /* Outline for the button */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            outline: 1px solid #d64dcf; /* Outline for the dropdown content */
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            outline: none; /* Remove outline from links */
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #d64dcf;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -112,29 +158,29 @@
                             <option value="4" {{ $selectedQuarter == '4' ? 'selected' : '' }}>4th Quarter</option>
                         </select>
                         <button class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</button>
-
+                        <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
                     </div>
                     
                     <div class="dropdown-basic">
                         <div class="dropdown">
-                            <button class="btn btn-outline-primary" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <button class="dropbtn" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
                             <div class="dropdown-content">
                                 <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#statusModal">Status</a>
                                 <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">MOV's</a>
-                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">Log</a>
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#logModal">Log</a>
                             </div>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-outline-primary" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <button class="dropbtn" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
                             <div class="dropdown-content">
                                 <a id="exportButton">Excel</a>
                                 <a id="pdfButton" href="{{ url('/gadar-pdf') }}" target="_blank">PDF</a>
                             </div>
                         </div>
                         <div>
-                        <button class="btn btn-outline-primary " type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div class="card-body">
@@ -790,49 +836,26 @@
             <div class="dt-ex">
                     <table class="table border table-sm" style=" padding: 1px 1px; " id="export-button">
                         <thead>
-                            <!-- <tr>
-                                <th colspan="5" class="border" style="text-align: center; vertical-align: middle;">Upload MOV's</th>
-                            </tr> -->
+                           
                             <tr>
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Date Input</th>
-                                <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Time</th>
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Count</th> -->
+                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Time</th> -->
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Code</th>
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Division/Section</th>
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">Section</th> -->
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">File Size</th>
-                                <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">Date Uploaded</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($gadar as $l)
-                            @if ($l->verify_id)
+                        @foreach($gadarlog as $log)
                                 <tr class="border">
                                     <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('Y-m-d')}}
-                                        @endif
-                                    </td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('h:i:s A')}}
+                                        @if ($log->created_at)
+                                            {{ \Carbon\Carbon::parse($log->created_at)->format('F d, Y h:i:s') }}
                                         @endif
                                     </td>
                                     <!-- <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$loop->iteration}}</td> -->
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$l->indicator_code}}</td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$l->rawresponsible_unit}}</td>
-                                    <!-- <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('Y-m-d')}}
-                                        @endif
-                                    </td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('h:i:s A')}}
-                                        @endif
-                                    </td> -->
+                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$log->indicator_code}}</td>
+                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$log->rawresponsible_unit}}</td>
                                 </tr>
-                            @endif
                         @endforeach             
                         </tbody>
                     </table>

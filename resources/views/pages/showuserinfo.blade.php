@@ -8,6 +8,20 @@
 @endsection
 
 @section('style')
+<style>
+        .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+            .card .card-header {
+            background-color: #fff;
+            padding: 30px;
+            border-bottom: 1px solid #ecf3fa;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+        }
+</style>
 @endsection
 
 @section('breadcrumb-title')
