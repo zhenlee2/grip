@@ -55,26 +55,6 @@
             gap: 5px;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 100px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
     </style>
     <style>
         .dropdown {
@@ -84,7 +64,7 @@
 
         .dropbtn {
             background-color: white;
-            color: #d64dcf;
+            color: white;
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -111,7 +91,8 @@
         }
 
         .dropdown-content a:hover {
-            background-color: #f1f1f1;
+            background-color: #d64dcf;
+            color: #d64dcf;
         }
 
         .dropdown:hover .dropdown-content {
@@ -163,7 +144,7 @@
                     
                     <div class="dropdown-basic">
                         <div class="dropdown">
-                            <button class="dropbtn" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <button class="dropbtn " style="color: #d64dcf;" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
                             <div class="dropdown-content">
                                 <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#statusModal">Status</a>
                                 <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">MOV's</a>
@@ -171,7 +152,7 @@
                             </div>
                         </div>
                         <div class="dropdown">
-                            <button class="dropbtn" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <button class="dropbtn" style="color: #d64dcf;" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
                             <div class="dropdown-content">
                                 <a id="exportButton">Excel</a>
                                 <a id="pdfButton" href="{{ url('/gadar-pdf') }}" target="_blank">PDF</a>
@@ -188,6 +169,7 @@
                 <div class="dt-ext table-responsive table-container">
                   <table class="table border table-xs" style="padding: 1px 1px; " >
                      <thead class="sticky-header">
+                        <th class="border col-1 p-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Action</th>
                         <th class="border " style="text-align: center; vertical-align: middle; padding: 4px;">ID</th>
                         <th class="border col-4" style="text-align: center; vertical-align: middle; padding: 4px;">Gender Issue or GAD Mandate</th>
                         <th class="border col-2" style="text-align: center; vertical-align: middle; padding: 4px;">Results Indicator</th>
@@ -212,9 +194,9 @@
                         <th class="border col-2" style="text-align: center; vertical-align: middle; padding: 1px;">Actual Activities</th>
                         <!-- <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">Lead Division/Office</th> -->
                         <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">Responsible Unit/Office</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks / Justification</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks from GAD Focal Person</th>
-                        <th class="border col-1 p-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Action</th>
+                        <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks / Justification</th>
+                        <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks from GAD Focal Person</th>
+                        
                      </thead>
                      <tbody>
                         <tr>
@@ -230,6 +212,19 @@
                                 <tr class="budget-rowa">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -251,17 +246,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }} " data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;" data-activity="{{$g->gad_activity }}">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -270,20 +274,18 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
+                                    <!-- <td class="border p-1" align="center">
                                         <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
                                         <br>
                                         <br>
                                         @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
                                             @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
                                                 <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
                                             @elseif($g->verify_id >= 0)
                                                 <span class="badge badge-success">Verified</span>
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> -->
                                 </tr>
                             @endif
                         @endforeach
@@ -306,6 +308,19 @@
                                 <tr class="budget-rowb">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -327,17 +342,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -346,20 +370,7 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
-                                        <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
-                                        <br>
-                                        <br>
-                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
-                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
-                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
-                                            @elseif($g->verify_id >= 0)
-                                                <span class="badge badge-success">Verified</span>
-                                            @endif
-                                        @endif
-                                    </td>
+                                    
                                 </tr>
                             @endif
                         @endforeach
@@ -382,6 +393,19 @@
                                 <tr class="budget-rowc">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -403,17 +427,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -422,20 +455,18 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
+                                    <!-- <td class="border p-1" align="center">
                                         <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
                                         <br>
                                         <br>
                                         @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
                                             @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
                                                 <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
                                             @elseif($g->verify_id >= 0)
                                                 <span class="badge badge-success">Verified</span>
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> -->
                                 </tr>
                             @endif
                         @endforeach

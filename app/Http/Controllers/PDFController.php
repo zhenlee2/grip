@@ -15,7 +15,6 @@ class PDFController extends Controller
         $level = auth()->user()->level_id;
         $division = auth()->user()->division_id;
         $section = auth()->user()->section_id;
-
         $response = [];
 
         $data = gadar::select(
@@ -50,7 +49,6 @@ class PDFController extends Controller
                             ->get();
 
         foreach ($data as $key) {
-
             $gadarActual = gadaractual::select(
                             'quarter',
                             'physical_male', 
@@ -68,7 +66,6 @@ class PDFController extends Controller
                             ->where('quarter', $quarter)
                             ->orderBy('tbl_gadaractual.created_at', 'asc') // Sort by created_at in ascending order
                             ->first();
-            
             $key->quarter = $gadarActual->quarter ?? null;
             $key->physical_male = $gadarActual->physical_male ?? null;
             $key->physical_female = $gadarActual->physical_female ?? null;
@@ -93,9 +90,7 @@ class PDFController extends Controller
                 array_push($response, $key);
             }
         }
-        // $collect = collect($response);
-
         $pdf = Pdf::loadView('pages.gadar.my_pdf', ['gadar' => $response])->setPaper('legal', 'landscape');
-        return $pdf->stream("gadar_{$year}_{$quarter}.pdf");
+        return $pdf->stream("GAD_Accomplishment_{$year}_{$quarter}.pdf");
     }
 }

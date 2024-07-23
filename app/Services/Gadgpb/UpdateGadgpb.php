@@ -16,7 +16,7 @@ class UpdateGadgpb
         $gadar_id = $request->input('gadar_id');
         $mandate = $request->input('mandate');
         $result = $request->input('result');
-        $activity = $request->file('activity'); // This will return an array of files
+        $activity = $request->input('activity'); // This will return an array of files
         $division = $request->input('dataDiv');
         $section = $request->input('dataSec');
         $justification = $request->input('justification');
@@ -39,10 +39,10 @@ class UpdateGadgpb
             if ($gadar->gad_activity != $activity) {
                 $changes['gad_activity'] = $activity;
             }
-            if ($gadar->responsible_unit != $division) {
+            if (!empty($division) && $division != '[]' && $gadar->responsible_unit != $division) {
                 $changes['responsible_unit'] = $division;
             }
-            if ($gadar->unit != $section) {
+            if (!empty($section) && $section != '[]' && $gadar->unit != $section) {
                 $changes['unit'] = $section;
             }
             if ($gadar->justification != $justification) {

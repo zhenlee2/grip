@@ -11,40 +11,6 @@
             padding-bottom: 5px;
         }
     </style>
-        <style>
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .table th, .table td {
-            border: 1px solid #c6b6d9;
-            padding: 8px;
-            text-align: left;
-            vertical-align: middle;
-            max-width: 300px; /* Set maximum width for table cells */
-            word-wrap: break-word; /* Wrap long words */
-            /* overflow: hidden; */
-            /* text-overflow: ellipsis; Add ellipsis for overflow text */
-            /* white-space: nowrap; Prevent text from wrapping */
-        }
-        .table th {
-            background-color: #c6b6d9;
-            color: white;
-        }
-        .table .header {
-            background-color: #674ea7;
-        }
-        .score-input {
-            width: 100%;
-            text-align: center;
-            border: none;
-            color: white;
-            background-color: #c6b6d9;
-        }
-        select {
-            width: 100%;
-        }
-    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -95,70 +61,48 @@
                                                 <div class="tab-pane contact-tab-0 tab-content-child fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
                                                     <div class="card-body">
                                                         <div class="dt-ext table-responsive">
-                                                        <table class="table border gy-6 table-sm">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="text-center" style="color: white; background-color: #674ea7; vertical-align: middle;" colspan="4">
-                                                                        <h5>POLICY ORGANIZATIONAL ASSESSMENT QUESTIONNAIRE</h5>
-                                                                    </th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" colspan="2">
-                                                                        <h6><strong>TOTAL GMEF SCORE <i>(POLICY)</i></strong></h6>
-                                                                    </td>
-                                                                    <td class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;"  colspan="1">
-                                                                        <h5 id="grandTotalCell">0</h5>
-                                                                    </td>
-                                                                    <td class="border" style="color: white; background-color: #c6b6d9; vertical-align: middle;" colspan="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="text-center border w-400px p-1" rowspan="2" style="color: white; background-color: #c6b6d9; vertical-align: middle;">DESCRIPTORS</th>
-                                                                    <th class="text-center border p-1" colspan="1" style="color: white; background-color: #c6b6d9; vertical-align: middle;">SCORE</th>
-                                                                    <th class="text-center border p-1" colspan="1" rowspan="2" style="color: white; background-color: #c6b6d9; vertical-align: middle;">Score Per Item</th>
-                                                                    <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" rowspan="2">Means of Verification/Remarks</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="border p-1" colspan="6" class="" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">1. Issuance of Foundational Policies <i>(max score: 5; for each item or question, 1.67)</i></th>
-                                                                </tr>
-                                                                <tr class="default-according" id="accordionclose" >
-                                                                    <tr class="collapse" id="collapse1" aria-labelledby="heading1" data-bs-parent="#accordionclose">
-                                                                        <td class="border p-1" colspan="1">1.1 Has the organization issued policies articulating support to GAD mandates and establishing the  essential elements of GAD Planning and Budgeting? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                        <td class="border p-1" colspan="1">
-                                                                        <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                            <option value="0">No Policy</option>
-                                                                            <option value="0.8333333333333333">One Element</option>
-                                                                            <option value="1.666666666666667">All Elements</option>
-                                                                        </select>
-                                                                        <!-- Container for displaying full descriptions -->
-                                                                        <div id="description-container" class="mt-2"></div>
-                                                                        </td>
-                                                                        <td class="border p-1">awdawdawd</td>
-                                                                        <td class="border p-1">awdawd</td>
-                                                                    </tr>
-                                                                </tr>
-                                                            </tbody>
-                                                                    
-                                                                    
-                                                                         <!-- <tr>
+                                                                <table class="table border gy-6 table-xs">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center" style="color: white; background-color: #674ea7; vertical-align: middle;" colspan="6"><h5>POLICY ORGANIZATIONAL ASSESSMENT QUESTIONNAIRE</h5></th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" colspan="4" style="vertical-align: middle;"><h6><strong>TOTAL GMEF SCORE <i>(POLICY)</i></strong></h6></td>
+                                                                            <td class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;"><h5 id="grandTotalCell">0</h5></td>
+                                                                            <td class="border" style="color: white; background-color: #c6b6d9; vertical-align: middle;"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                        <th class="text-center border w-400px p-1" rowspan="3" style="color: white; background-color: #c6b6d9; vertical-align: middle;">DESCRIPTORS</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th class="text-center border p-1" colspan="3" style="color: white; background-color: #c6b6d9; vertical-align: middle;">SCORE</th>
+                                                                            <th class="text-center border p-1" colspan="1" rowspan="2" style="color: white; background-color: #c6b6d9; vertical-align: middle;">Score Per Item</th>
+                                                                            <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" rowspan="2">Means of Verification/Remarks</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;">NO </th>
+                                                                            <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;">PARTLY</th>
+                                                                            <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;">YES</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                         <tr>
                                                                             <td class="border p-1" colspan="6">1. Issuance of Foundational Policies <i>(max score: 5; for each item or question, 1.67)</i></td>
                                                                         </tr>
                                                                         <tr >
                                                                             <td class="border p-1">1.1 Has the organization issued policies articulating support to GAD mandates and establishing the  essential elements of GAD Planning and Budgeting? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
                                                                             <td>
-                                                                            <select id="score-select" class="border p-1" onchange="updateDescription(this.value)">
+                                                                                <select id="score-select" class="border p-1" onchange="updateDescription(this.value)">
                                                                                     <option value="0">No Policy</option>
                                                                                     <option value="0.8333333333333333">One Element</option>
                                                                                     <option value="1.666666666666667">All Elements</option>
                                                                                 </select>
-
-                                                                               
-                                                                                <div id="description-container" class="mt-2 p-1"></div>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
                                                                             </td>
-                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;">
-                                                                                <input type="text" id="score-input" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center" disabled>
-                                                                            </td>
+                                                                            <!-- <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell1(this, 'score-input', 0)">No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued</td>
+                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell1(this, 'score-input', 0.8333333333333333)">Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued</td>
+                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell1(this, 'score-input', 1.666666666666667)">Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued</td> -->
+                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;"><input type="text" id="score-input" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center"  disabled></td>
                                                                             <td class="w-175px border p-1" colspan="2">Enumerate the GAD related policies issued (e.g., policy on setting up GFPS or GAD Office; collection and maintenance of sex-disaggregated database; conduct of organization-wide gender audit; capacity-building plan for GFPS and HR of organization).
                                                                                 <table class="table  table-row-bordered gy-6">
                                                                                     <tr> 
@@ -180,8 +124,8 @@
                                                                                 </tr>
                                                                                 </table>
                                                                             </td>
-                                                                        </tr> -->
-                                                                        <!-- <tr>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td class="border p-1">1.2 Has the organization conducted a review of existing policies for consistency with emerging GAD issues? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell1(this, 'score-input1', 0)">No policy reviewed</td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell1(this, 'score-input1', 0.8333333333333333)">Some existing policies reviewed but no new policies re-issued and/ or revised</td>
@@ -535,7 +479,7 @@
                                                                             <th class="text-center border" colspan="4"><h5><strong>TOTAL GMEF SCORE <i>(Policy)</i></strong></h5></th>
                                                                             <th class="text-center border" colspan="1" ><h5 id="grandTotalCell1">0</h5></th>
                                                                             <th class="text-center border" colspan="1"></th>
-                                                                        </tr> -->
+                                                                        </tr>
                                                                 </table>
                                                             <!-- </div> -->
                                                         <!-- </div>  -->
@@ -3934,30 +3878,6 @@ function highlightCell1(score) {
         inputField.value = score;
     }
 }
-
-function updateDescriptionAndScore(selectElement) {
-    const score = selectElement.value;
-    const descriptions = {
-        "0": "No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued.",
-        "0.8333333333333333": "Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued.",
-        "1.666666666666667": "Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued."
-    };
-
-    // Update the description container with the full description
-    document.getElementById('description-container').innerText = descriptions[score];
-
-    // Update the score input field
-    document.getElementById('score-input').value = score;
-}
-
-// Initial update (if needed)
-document.addEventListener('DOMContentLoaded', () => {
-    const selectElement = document.getElementById('score-select');
-    if (selectElement) {
-        updateDescriptionAndScore(selectElement);
-    }
-});
 </script>
-
 @endsection
 

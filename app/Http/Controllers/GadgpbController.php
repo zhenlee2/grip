@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GadgpbUpdateRequest;
 use App\Models\gadar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
