@@ -17,4 +17,5 @@ class GmefController extends Controller
             return redirect()->route('login');
         }
     }
+
 }
