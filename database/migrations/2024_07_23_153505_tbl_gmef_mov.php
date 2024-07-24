@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblMov extends Migration
+class TblGmefMov extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class TblMov extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_mov', function (Blueprint $table) {
+        Schema::create('tbl_gmef_mov', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('questionnaire_id');
             $table->text('instruction_one');
@@ -36,6 +36,6 @@ class TblMov extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_mov');
+        Schema::dropIfExists('tbl_gmef_mov');
     }
 }

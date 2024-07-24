@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblActualscore extends Migration
+class TblGmefIndicator extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class TblActualscore extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_actualscore', function (Blueprint $table) {
+        Schema::create('tbl_gmef_indicator', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('questionnaire_id');
-            $table->integer('year'); // Use integer instead if 'year' type is not supported
-            $table->text('actual_score_desc');
-            $table->text('actual_point');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('tool_id');
+            $table->string('title');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +29,6 @@ class TblActualscore extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_actualscore');
+        Schema::dropIfExists('tbl_gmef_indicator');
     }
 }

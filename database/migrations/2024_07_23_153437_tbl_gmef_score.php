@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblScore extends Migration
+class TblGmefScore extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class TblScore extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_score', function (Blueprint $table) {
+        Schema::create('tbl_gmef_score', function (Blueprint $table) {
             $table->id();
             $table->integer('questionnaire_id');
             $table->string('score_no_desc');
@@ -34,6 +34,6 @@ class TblScore extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_score');
+        Schema::dropIfExists('tbl_gmef_score');
     }
 }

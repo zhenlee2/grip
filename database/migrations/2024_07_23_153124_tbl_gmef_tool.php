@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TblQuestionnaire extends Migration
+class TblGmefTool extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class TblQuestionnaire extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_questionnaire', function (Blueprint $table) {
+        Schema::create('tbl_gmef_tool', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('indicator_id');
-            $table->string('descriptors');
+            $table->string('title');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +28,6 @@ class TblQuestionnaire extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_questionnaire');
+        Schema::dropIfExists('tbl_gmef_tool');
     }
 }
