@@ -17,9 +17,6 @@ class TblQuestionnaire extends Migration
             $table->id();
             $table->unsignedBigInteger('indicator_id');
             $table->string('descriptors');
-            $table->string('point');
-            $table->string('movs_desc_one');
-            $table->string('movs_desc_two');
             $table->timestamps();
             $table->softDeletes();
         });
