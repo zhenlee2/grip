@@ -15,7 +15,7 @@ class gmefmov extends Model
         'questionnaire_id',
         'instruction_one',
         'instruction_two',
-        'instrucation_three',
+        'instruction_three',
         'title_one',
         'title_two',
         'title_three',

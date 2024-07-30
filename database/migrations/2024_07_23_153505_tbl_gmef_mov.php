@@ -18,7 +18,7 @@ class TblGmefMov extends Migration
             $table->unsignedBigInteger('questionnaire_id');
             $table->text('instruction_one');
             $table->text('instruction_two');
-            $table->text('instrucation_three');
+            $table->text('instruction_three');
             $table->text('title_one');
             $table->text('title_two');
             $table->text('title_three');

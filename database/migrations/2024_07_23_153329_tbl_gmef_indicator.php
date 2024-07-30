@@ -16,7 +16,7 @@ class TblGmefIndicator extends Migration
         Schema::create('tbl_gmef_indicator', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tool_id');
-            $table->string('title');
+            $table->string('title_indi');
             $table->timestamps();
             $table->softDeletes();
         });

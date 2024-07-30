@@ -13,6 +13,7 @@ class gmefindicator extends Model
 
     protected $fillable = [
         'tool_id',
-        'title',
+        'title_indi',
+        'title_parenthesis',
     ];
 }

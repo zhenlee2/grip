@@ -14,5 +14,6 @@ class gmefquestionnaire extends Model
     protected $fillable = [
         'indicator_id',
         'descriptors',
+        'desc_parenthesis',
     ];
 }

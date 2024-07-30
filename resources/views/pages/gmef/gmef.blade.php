@@ -119,29 +119,165 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <th class="border p-1" colspan="6" class="" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">1. Issuance of Foundational Policies <i>(max score: 5; for each item or question, 1.67)</i></th>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 1)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    <tr class="collapse" id="collapse1" aria-labelledby="heading1" data-bs-parent="#accordionclose">
-                                                                        <td class="border p-1" colspan="1">1.1 Has the organization issued policies articulating support to GAD mandates and establishing the  essential elements of GAD Planning and Budgeting? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                        <td class="border p-1" colspan="1">
-                                                                        <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                            <option value="0">No Policy</option>
-                                                                            <option value="0.8333333333333333">One Element</option>
-                                                                            <option value="1.666666666666667">All Elements</option>
-                                                                        </select>
-                                                                        <!-- Container for displaying full descriptions -->
-                                                                        <div id="description-container" class="mt-2"></div>
-                                                                        </td>
-                                                                        <td class="border p-1">awdawdawd</td>
-                                                                        <td class="border p-1">awdawd</td>
-                                                                    </tr>
+                                                                    @foreach($questionnaire as $key => $g) 
+                                                                        @if($g->indicator_id == 1)
+                                                                            <tr class="collapse" id="collapse1" aria-labelledby="heading1" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1" colspan="1">
+                                                                                            {{ $g->descriptors }} <i>{{$g->desc_parenthesis}}</i>
+                                                                                    </td>
+                                                                                <td class="border p-1" colspan="1">
+                                                                                    <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
+                                                                                        <option value="0" {{ $g->score == 0 ? 'selected' : '' }}>No Policy</option>
+                                                                                        <option value="0.8333333333333333" {{ $g->score == 0.8333333333333333 ? 'selected' : '' }}>One Element</option>
+                                                                                        <option value="1.666666666666667" {{ $g->score == 1.666666666666667 ? 'selected' : '' }}>All Elements</option>
+                                                                                    </select>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1">awdawdawd</td>
+                                                                                <td class="border p-1">awdawd</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tr>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="heading2">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 2)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="default-according" id="accordionclose" >
+                                                                    @foreach($questionnaire as $key => $g)
+                                                                        @if($g->indicator_id == 2)
+                                                                            <tr class="collapse" id="collapse2" aria-labelledby="heading2" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1" colspan="1">
+                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    </td>
+                                                                                <td class="border p-1" colspan="1">
+                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
+                                                                                    <option value="0">No Policy</option>
+                                                                                    <option value="0.8333333333333333">One Element</option>
+                                                                                    <option value="1.666666666666667">All Elements</option>
+                                                                                </select>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1">awdawdawd</td>
+                                                                                <td class="border p-1">awdawd</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tr>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="heading3">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 3)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="default-according" id="accordionclose" >
+                                                                    @foreach($questionnaire as $key => $g)
+                                                                        @if($g->indicator_id == 3)
+                                                                            <tr class="collapse" id="collapse3" aria-labelledby="heading3" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1" colspan="1">
+                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    </td>
+                                                                                <td class="border p-1" colspan="1">
+                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
+                                                                                    <option value="0">No Policy</option>
+                                                                                    <option value="0.8333333333333333">One Element</option>
+                                                                                    <option value="1.666666666666667">All Elements</option>
+                                                                                </select>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1">awdawdawd</td>
+                                                                                <td class="border p-1">awdawd</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tr>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="heading4">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 4)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="default-according" id="accordionclose" >
+                                                                    @foreach($questionnaire as $key => $g)
+                                                                        @if($g->indicator_id == 4)
+                                                                            <tr class="collapse" id="collapse4" aria-labelledby="heading4" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1" colspan="1">
+                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    </td>
+                                                                                <td class="border p-1" colspan="1">
+                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
+                                                                                    <option value="0">No Policy</option>
+                                                                                    <option value="0.8333333333333333">One Element</option>
+                                                                                    <option value="1.666666666666667">All Elements</option>
+                                                                                </select>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1">awdawdawd</td>
+                                                                                <td class="border p-1">awdawd</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tr>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="true" aria-controls="heading5">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 5)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="default-according" id="accordionclose" >
+                                                                    @foreach($questionnaire as $key => $g)
+                                                                        @if($g->indicator_id == 5)
+                                                                            <tr class="collapse" id="collapse5" aria-labelledby="heading5" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1" colspan="1">
+                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    </td>
+                                                                                <td class="border p-1" colspan="1">
+                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
+                                                                                            <option value="0" {{ $g->score == 0 ? 'selected' : '' }}>No Policy</option>
+                                                                                            <option value="0.8333333333333333" {{ $g->score == 0.8333333333333333 ? 'selected' : '' }}>One Element</option>
+                                                                                            <option value="1.666666666666667" {{ $g->score == 1.666666666666667 ? 'selected' : '' }}>All Elements</option>
+                                                                                        </select>
+                                                                                <!-- Container for displaying full descriptions -->
+                                                                                <div id="description-container" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1">awdawdawd</td>
+                                                                                <td class="border p-1">awdawd</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
                                                                 </tr>
                                                             </tbody>
                                                                     
                                                                     
-                                                                         <!-- <tr>
+                                                                         <!--  <tr>
                                                                             <td class="border p-1" colspan="6">1. Issuance of Foundational Policies <i>(max score: 5; for each item or question, 1.67)</i></td>
                                                                         </tr>
                                                                         <tr >
@@ -309,7 +445,7 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="border p-1">2.3 Has the organization used gender-fair language and images in its policy issuances? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
+                                                                            <td class="border p-1"></td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell2(this, 'score-input5', 0)">Gender-fair language and images not yet used in policy issuances</td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell2(this, 'score-input5', 0.8333333333333333)">Gender-fair language and images used in some policy issuances</td>
                                                                             <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell2(this, 'score-input5', 1.666666666666667)">Gender-fair language and images used in all policy issuances</td>
@@ -3935,28 +4071,28 @@ function highlightCell1(score) {
     }
 }
 
-function updateDescriptionAndScore(selectElement) {
-    const score = selectElement.value;
-    const descriptions = {
-        "0": "No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued.",
-        "0.8333333333333333": "Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued.",
-        "1.666666666666667": "Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued."
-    };
+// function updateDescriptionAndScore(selectElement) {
+//     const score = selectElement.value;
+//     const descriptions = {
+//         "0": "No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued.",
+//         "0.8333333333333333": "Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued.",
+//         "1.666666666666667": "Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued."
+//     };
 
-    // Update the description container with the full description
-    document.getElementById('description-container').innerText = descriptions[score];
+//     // Update the description container with the full description
+//     document.getElementById('description-container').innerText = descriptions[score];
 
-    // Update the score input field
-    document.getElementById('score-input').value = score;
-}
+//     // Update the score input field
+//     document.getElementById('score-input').value = score;
+// }
 
-// Initial update (if needed)
-document.addEventListener('DOMContentLoaded', () => {
-    const selectElement = document.getElementById('score-select');
-    if (selectElement) {
-        updateDescriptionAndScore(selectElement);
-    }
-});
+// // Initial update (if needed)
+// document.addEventListener('DOMContentLoaded', () => {
+//     const selectElement = document.getElementById('score-select');
+//     if (selectElement) {
+//         updateDescriptionAndScore(selectElement);
+//     }
+// });
 </script>
 
 @endsection
