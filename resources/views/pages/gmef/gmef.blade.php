@@ -4093,6 +4093,13 @@ function highlightCell1(score) {
 //         updateDescriptionAndScore(selectElement);
 //     }
 // });
+
+function updateDescriptionAndScore(selectElement) {
+    const selectedValue = selectElement.value;
+
+    console.log("Selected value:", selectedValue);
+          
+};
 </script>
 
 @endsection
