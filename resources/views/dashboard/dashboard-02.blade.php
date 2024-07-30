@@ -11,11 +11,33 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css')}}">
 @endsection
 
-<!-- @section('style')
-@endsection -->
+@section('style')
+<style>
+	.page-wrapper .page-body-wrapper .page-title {
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+	.card .card-header {
+    background-color: #fff;
+    padding: 30px;
+    border-bottom: 1px solid #ecf3fa;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    position: relative;
+}
+.card-body {
+    -webkit-box-flex: 1;
+    /* -ms-flex: 1 1 auto;
+    flex: 1 1 auto; */
+    padding: 0rem 0rem;
+}
+</style>
+	
+@endsection
 
 @section('breadcrumb-title')
-<h3>Dashboard</h3>
+<!-- <span><h3>Dashboard</h3></span> 
+<span>Welcome back, {{auth()->user()->fname}}!</span> -->
 @endsection
 
 @section('breadcrumb-items')
@@ -25,12 +47,12 @@
 
 @section('content')
 <div class="container-fluid">
-			<div class="card">
-				<div class="card-header">
+			<div class="card" >
+				<div class="card-header" style="padding: 20;">
 					<div class="d-flex justify-content-between align-items-center">
 						<div>
-							<h5>Gender Resource Information Pool Statistics</h5>
-							<!-- Add a description or additional information here if needed -->
+							<span><h3>Dashboard</h3></span> 
+							<span>Welcome back, {{auth()->user()->fname}}!</span>
 						</div>
 						<div>
 							<select class="form-select">
@@ -64,7 +86,7 @@
 							<div class="media">
 								<div class="media-body">
 								<p><span class="f-w-500 font-roboto">GAD Budget</span><span class="f-w-700 font-primary ms-2"><i class="icofont icofont-coins"></i></span></p>
-								<h4 class="f-w-500 mb-0 f-26"><span class="counter">{{ $totalBudget }}</span></h4>
+								<h4 class="f-w-500 mb-0 f-15"><span class="counter">{{ $totalBudget }}</span></h4>
 								</div>
 							</div>
 						</div>
@@ -274,14 +296,14 @@
 			highlightStroke: CubaAdminConfig.primary ,
 			data: []
 		}, 
-		// {
-		// 	label: "My Second dataset",
-		// 	fillColor: "rgba(247, 49, 100, 0.4)",
-		// 	strokeColor: CubaAdminConfig.secondary ,
-		// 	highlightFill: "rgba(247, 49, 100, 0.6)",
-		// 	highlightStroke: CubaAdminConfig.secondary,
-		// 	data: [28, 48, 40, 19, 86, 27, 90]
-		// }
+		{
+			label: "My Second dataset",
+			fillColor: "rgba(247, 49, 100, 0.4)",
+			strokeColor: CubaAdminConfig.secondary ,
+			highlightFill: "rgba(247, 49, 100, 0.6)",
+			highlightStroke: CubaAdminConfig.secondary,
+			data: [28, 48, 40, 19, 50, 27, 30]
+		}
 		]
 	};
 	jsData.forEach(e => {

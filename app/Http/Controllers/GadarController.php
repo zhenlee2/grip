@@ -29,7 +29,7 @@ class GadarController extends Controller
                 $gadar = $showGadar->execute($year,$quarter);
                 $filteryear = $showGadar->execute4();
                 $gadarStatus = $showGadar->execute9($year,$quarter);
-                $gadarlog = $showGadar->execute10($year); //GADAR Log
+                $gadarlog = $showGadar->execute10($year,$quarter); //GADAR Log
                 return view('pages.gadar.gadar',compact('user','gadar', 'selectedYear', 'selectedQuarter', 'filteryear','gadarStatus', 'gadarlog'));
         }else {
             return redirect()->route('login');
@@ -125,6 +125,6 @@ class GadarController extends Controller
 
     public function export($year = null, $quarter = null) 
     {
-        return Excel::download(new GadarDataExport($year, $quarter), 'GAD Accomplishment Report.xlsx');
+        return Excel::download(new GadarDataExport($year, $quarter), "Gender_and_Development_Accomplishment_Report_{$year}_{$quarter}.xlsx");
     }
 }

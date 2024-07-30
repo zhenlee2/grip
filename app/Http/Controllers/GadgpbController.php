@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GadgpbUpdateRequest;
 use App\Models\gadar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,19 +10,21 @@ use App\Models\Users;
 use App\Models\Section;
 use App\Models\Division;
 use App\Services\Gadgpb\UpdateGadgpb;
-// use App\Services\Gadar\UpdateGadar;
+use App\Services\Gadgpb\ShowGadgpb;
 
 class GadgpbController extends Controller
 {
-    public function index(Request $request)
+    public function index($year, Request $request,ShowGadgpb $showGadgpb)
     {
         if(Auth::check()) {
             $user = Users::findOrFail(auth()->id());
-            // $gadar = $showGadar->execute3($year, $division);
-            $gadar = gadar::all();
+            $selectedYear = $year;
+            $gadar = $showGadgpb->execute($year);
+            $filteryear = $showGadgpb->execute4();
+            // $gadar = gadar::all();
             $section = Section::all();
             $division = Division::all();
-            return view('pages.gadgpb.gadgpb',compact('user','gadar','section', 'division'));
+            return view('pages.gadgpb.gadgpb',compact('user','gadar','section', 'division', 'filteryear', 'selectedYear'));
         }else {
             return redirect()->route('login');
         }

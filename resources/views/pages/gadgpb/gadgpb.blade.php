@@ -7,38 +7,43 @@
 @endsection
 
 @section('style')
+    <style>
+            .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+            .card .card-header {
+            background-color: #fff;
+            padding: 30px;
+            border-bottom: 1px solid #ecf3fa;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+        }
+        /* Add custom CSS for freezing table header */
+        .table-container {
+            max-height: 550px; /* Adjust max-height as needed */
+            overflow-y: auto;
+        }
+        .sticky-header th {
+            position: sticky;
+            color: white;
+            top: 0;
+            background-color: #57bb8a; /* Adjust background color if needed */
+            /* z-index: 1; Ensure it overlays other content properly */
+            border: 1px solid #ccc; /* Add border to table header cells */
+            padding: 0px; /* Adjust padding as needed */
+            text-align: center; /* Center align text */
+            vertical-align: middle; /* Center vertical alignment */
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
-<h3>Gender and Development - Plan and Budget</h3>
+<h5>Gender and Development - Plan and Budget</h5>
 @endsection
 
 @section('filter')
-<div class="card-toolbar">
-  <div class="input-group flex-nowrap">
-        <span class="input-group-text"><i class="bi bi-calendar fs-4"></i></span>
-           <div class="overflow-hidden flex-grow-1">
-                 <select class="form-select" data-control="select2" data-placeholder="Filter Year" id="filter_year">
-                    <optgroup label="Year">
-                    <option value="0000"></option>
-                    </optgroup>
-                 </select>
-           </div>
-        <span class="input-group-text bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Year</span>
-        <!-- <span class="input-group-text bg-dark text-white " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="View MOV's" id="movs" data-bs-target="#editModal" style="cursor: pointer;">Filter Year</span> -->
-        <tr>
-            <td>
-                <button class="btn btn-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"> <span class="fa fa-file-photo-o"> MOVs</span></button>
-            </td>
-            <td>
-                <button class="btn btn-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><span class="icon-harddrives"> Logs</span></button>
-            </td>
-            <td>
-                <button class="btn btn-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><span class="icofont icofont-plus-circle"> Add Indicator</span></button>
-            </td>
-        </tr>
-    </div>
-</div>
 @endsection
 
 @section('breadcrumb-items')
@@ -51,28 +56,75 @@
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
-            
+         <div class="card-header" style="padding: 20px;">
+                <div align="center">
+                    <div  class="dt-ext table-responsive table-container">
+                        <table class="table " style="padding:0px 0px; border:none;">
+                            <tr>
+                                <td style="border:none;">
+                                    <select id="filter_year" class="btn btn-outline-primary" >
+                                        <option value="" disabled>Select Year</option>
+                                        <option value="0000">0000</option>
+                                        @foreach ($filteryear as $key => $y)
+                                            <option value="{{ $y->year }}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
+                                                {{ $y->year }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</span>
+                                </td>
+                                <!-- <td class="col-3" ></td> -->
+                                <td  style="text-align:right; border:none;">
+                                    <a id="exportButton" class="btn btn-outline-success">
+                                        <i class="icofont icofont-file-excel"></i>
+                                        <span> Generate</span>
+                                    </a>
+                                    <a id="pdfButton" href="{{ url('/gadar-pdf') }}" class="btn btn-outline-primary" target="_blank">Download PDF</a>
+                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View Status" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#statusModal"><i class="icofont icofont-ui-check"></i><span> Status</span></button>
+                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"><i class="fa fa-file-photo-o"></i><span> MOVs</span></button>
+                                    <button class="btn btn-outline-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><i class="icon-harddrives"></i><span> Logs</span></button>
+                                    <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
+                                
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
-              
                <div class="dt-ext table-responsive">
-                  <table class="table border table-xs" style="padding: 1px 1px; ">
-                     <thead>
-                        <th class="border " style="text-align: center; vertical-align: middle; padding: 4px">ID</th>
-                        <th class="border col-6" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Gender Issue or GAD Mandate</th>
-                        <th class="border col-3" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Results Indicator</th>
-                        <th class="border" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px">Male</th>
-                        <th class="border" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px">Female</th>
-                        <th class="border" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px">Total</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">PAP Description</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">GAD Activities</th>
-                        <!-- <th class="border " rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Lead Division/Office</th>
-                        <th class="border " rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Responsible Unit/Office</th> -->
-                        <th class="border " rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Responsible Unit/Office</th>
-                        <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;"></th>
-                     </thead>
+                  <table class="table border table-xs" style="padding: 1px 1px;">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="border" rowspan="3" style="text-align: center; vertical-align: middle; padding: 4px">ID</th>
+                                <th class="border" rowspan="3" colspan="1" style="text-align: center; vertical-align: middle;">Gender Issue or GAD Mandate</th>
+                                <th class="border" rowspan="3" colspan="1" style="text-align: center; vertical-align: middle;">Results Indicator</th>
+                                <th class="border" rowspan="1" colspan="4" style="text-align: center; vertical-align: middle; padding: 4px">Results</th>
+                                <th class="border p-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">PREXC</th>
+                                <th class="border p-1" rowspan="3" colspan="1" style="text-align: center; vertical-align: middle;">GAD Activities</th>
+                                <th class="border p-1" colspan="4" style="text-align: center; vertical-align: middle;">GAD Budget</th>
+                                <th class="border" rowspan="3" style="text-align: center; vertical-align: middle;  padding: 4px;">Responsible Unit/Office</th>
+                                <th class="border p-1" rowspan="3" style="text-align: center; vertical-align: middle;">Action</th>
+                            </tr>
+                            <tr>
+                            <th class="border" rowspan="2" style="text-align: center; vertical-align: middle; padding: 4px">Previous Year Accomplishment (FY 2022 Accomplishment)</th>
+                                <th class="border p-1" colspan="3" style="text-align: center; vertical-align: middle;">FY 2024 Target</th>
+                                <th class="border p-1" rowspan="2" style="text-align: center; vertical-align: middle;">PAP Description</th>
+                                <th class="border p-1" rowspan="2" colspan="1" style="text-align: center; vertical-align: middle;">Target Tier One</th>
+                                <th class="border p-1" rowspan="2" colspan="1" style="text-align: center; vertical-align: middle;">Target Tier Two</th>
+                                <th class="border p-1" rowspan="2" colspan="1" style="text-align: center; vertical-align: middle;">Target Tier Total</th>
+                                <th class="border" rowspan="2" colspan="1" style="text-align: center; vertical-align: middle;  padding: 4px;">Fund Source</th>
+                            </tr>
+                            <tr>
+                                <th class="border" style="text-align: center; vertical-align: middle; padding: 4px">Male</th>
+                                <th class="border" style="text-align: center; vertical-align: middle; padding: 4px">Female</th>
+                                <th class="border" style="text-align: center; vertical-align: middle; padding: 4px">Total</th>
+                                
+                            </tr>
+                        </thead>
                      <tbody>
                         <tr>
-                           <th class="border p-1" colspan="11" style="background-color:darkgrey;">A. Client-Focused</th>
+                           <th class="border p-1" colspan="15" style="background-color: #9fdac4;">A. Client-Focused</th>
                         </tr>
                         @foreach ($gadar as $g)
                             @if ($g->gadcategory_id == 1)
@@ -81,11 +133,21 @@
                                     <td class="border p-0" style="text-align: center; padding: 4px">{{ $g->indicator_code }}</td>
                                     <td class="border p-1" data-mandate="{{ $g->gad_mandate }}">{{ $g->gad_mandate }}</td>
                                     <td class="border p-1" data-res="{{ $g->result_indicator }}">{{ $g->result_indicator }}</td>
+                                    <td class="border p-1" data-="">
+                                        <span>M:</span><br>
+                                        <span>F:</span><br>
+                                        <span>Oth:</span><br>
+                                        <span>T:</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tmale="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tfemale="{{ $g->target_female }}">{{ $g->target_female }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-ttotal="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
                                     <td class="border p-1" data-pap="{{ $g->pap_desc }}">{{ $g->pap_desc }}</td>
-                                    <td class="border p-1" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style=" padding: 4px" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtierone="{{ $g->budget_tierone }}">{{  $g->budget_tierone }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtiertwo="{{ $g->budget_tiertwo }}">{{  $g->budget_tiertwo }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtotal="{{ $g->budget_totalamount }}">{{ $g->budget_totalamount }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-source="{{ $g->source }}">{{ $g->source }}</td>
                                     <!-- @if ($g->responsible_unit == '[]')
                                         <td class="border p-1" ></td>
                                         @else
@@ -96,7 +158,7 @@
                                         @else
                                         <td class="border p-1" data-unit="{{ $g->unit}}">{{ $g->unit}}</td>
                                     @endif -->
-                                    <td class="border p-1" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
                                     <td class="border p-1">
                                         <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button>
                                         <!-- <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button> -->
@@ -105,7 +167,7 @@
                             @endif
                         @endforeach
                         <tr>
-                           <th class="border p-1" colspan="11" style="background-color:darkgrey; margin: 0;">B. Organization-Focused</th>
+                           <th class="border p-1" colspan="15" style="background-color: #9fdac4;">B. Organization-Focused</th>
                         </tr>
                         @foreach ($gadar as $g)
                             @if ($g->gadcategory_id == 2)
@@ -114,11 +176,21 @@
                                     <td class="border p-0" style="text-align: center; padding: 4px">{{ $g->indicator_code }}</td>
                                     <td class="border p-1" data-mandate="{{ $g->gad_mandate }}">{{ $g->gad_mandate }}</td>
                                     <td class="border p-1" data-res="{{ $g->result_indicator }}">{{ $g->result_indicator }}</td>
+                                    <td class="border p-1" data-="">
+                                        <span>M:</span><br>
+                                        <span>F:</span><br>
+                                        <span>Oth:</span><br>
+                                        <span>T:</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tmale="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tfemale="{{ $g->target_female }}">{{ $g->target_female }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-ttotal="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
                                     <td class="border p-1" data-pap="{{ $g->pap_desc }}">{{ $g->pap_desc }}</td>
-                                    <td class="border p-1" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style=" padding: 4px" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtierone="{{ $g->budget_tierone }}">{{  $g->budget_tierone }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtiertwo="{{ $g->budget_tiertwo }}">{{  $g->budget_tiertwo }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtotal="{{ $g->budget_totalamount }}">{{ $g->budget_totalamount }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-source="{{ $g->source }}">{{ $g->source }}</td>
                                     <!-- @if ($g->responsible_unit == '[]')
                                         <td class="border p-1" ></td>
                                         @else
@@ -129,7 +201,7 @@
                                         @else
                                         <td class="border p-1" data-unit="{{ $g->unit}}">{{ $g->unit}}</td>
                                     @endif -->
-                                    <td class="border p-1" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
                                     <td class="border p-1">
                                         <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button>
                                         <!-- <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button> -->
@@ -138,20 +210,30 @@
                             @endif
                         @endforeach
                         <tr>
-                           <th class="border p-1 m-0;" colspan="11" style="background-color:darkgrey; ">C. GAD-Attributed Programs or Projects</th>
+                           <th class="border p-1 m-0;" colspan="15" style="background-color: #9fdac4;">C. GAD-Attributed Programs or Projects</th>
                         </tr>
                         @foreach ($gadar as $g)
                             @if ($g->gadcategory_id == 3)
-                                <tr>
+                            <tr>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
                                     <td class="border p-0" style="text-align: center; padding: 4px">{{ $g->indicator_code }}</td>
                                     <td class="border p-1" data-mandate="{{ $g->gad_mandate }}">{{ $g->gad_mandate }}</td>
                                     <td class="border p-1" data-res="{{ $g->result_indicator }}">{{ $g->result_indicator }}</td>
+                                    <td class="border p-1" data-="">
+                                        <span>M:</span><br>
+                                        <span>F:</span><br>
+                                        <span>Oth:</span><br>
+                                        <span>T:</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tmale="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-tfemale="{{ $g->target_female }}">{{ $g->target_female }}</td>
                                     <td class="border p-1" style="text-align: center; padding: 4px" data-ttotal="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
                                     <td class="border p-1" data-pap="{{ $g->pap_desc }}">{{ $g->pap_desc }}</td>
-                                    <td class="border p-1" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style=" padding: 4px" data-gadactivity="{{ $g->gad_activity }}">{{ $g->gad_activity }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtierone="{{ $g->budget_tierone }}">{{  $g->budget_tierone }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtiertwo="{{ $g->budget_tiertwo }}">{{  $g->budget_tiertwo }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-budtotal="{{ $g->budget_totalamount }}">{{ $g->budget_totalamount }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-source="{{ $g->source }}">{{ $g->source }}</td>
                                     <!-- @if ($g->responsible_unit == '[]')
                                         <td class="border p-1" ></td>
                                         @else
@@ -162,7 +244,7 @@
                                         @else
                                         <td class="border p-1" data-unit="{{ $g->unit}}">{{ $g->unit}}</td>
                                     @endif -->
-                                    <td class="border p-1" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
+                                    <td class="border p-1" style="text-align: center; padding: 4px" data-rawunit="{{ $g->rawresponsible_unit }}">{{ $g->rawresponsible_unit }}</td>
                                     <td class="border p-1">
                                         <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button>
                                         <!-- <button class="btn btn-success btn-sm form-control" type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Update" data-bs-toggle="modal" data-idUpdate="'.$d->id.'"data-bs-target="#editModal"><span class="icon-save-alt"></span></button> -->
@@ -216,7 +298,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-xxl-6 col-lg-6">
+                                                    <div class="col-xxl-12 col-lg-6">
                                                     <div class="card">
                                                         <!-- <span class="badge badge-success">Done</span> -->
                                                         <h6>Previous Accomplishment</h6>
@@ -251,35 +333,93 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xxl-6 col-lg-6">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xxl-12 col-lg-12">
                                                     <div class="card">
                                                         <!-- <span class="badge badge-success">Done</span> -->
-                                                        <h6>Target to Accomplishment</h6>
+                                                        <h6>Target Accomplishment</h6>
                                                             <div class="dt-ext table-responsive">
                                                             <table class="table border table-xs" style=" padding: 1px 1px; ">
                                                                     <thead>
                                                                         <th colspan="2" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">Physical</th>
-                                                                        <th colspan="2" class="border" style="vertical-align: middle; text-align: center; padding: 4px;">GAD Expenditure</th>
+                                                                        <!-- <th colspan="1" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">PREXC</th>
+                                                                        <th colspan="2" class="border" style="vertical-align: middle; text-align: center; padding: 4px;">GAD Budget</th> -->
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr class="border">
-                                                                            <td class="border col-1" style="text-align: center;">Male:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevm"></td>
-                                                                            <td class="border col-1" style="text-align: center;">Tier 1:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevtierone"></td>
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px; margin: 0;" >Male:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="targetmale" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td>
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td>
+                                                                            <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Tier 1:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="budgetone" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
                                                                             <!-- <td rowspan="3" style="vertical-align: middle; text-align: center;">10</td> -->
                                                                         </tr>
                                                                         <tr class="border">
-                                                                            <td class="border col-1" style="text-align: center;">Female:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevf"></td>
-                                                                            <td class="border col-1" style="text-align: center;">Tier 2:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevtiertwo"></td>
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px;">Female:</td>
+                                                                            <td class="border  col-1" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="targetfemale" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td>
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td>
+                                                                            <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Tier 2:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="budgettwo" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
                                                                         </tr>
                                                                         <tr class="border">
-                                                                            <td class="border col-1" style="text-align: center;">Total:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevtotalsex"></td>
-                                                                            <td class="border col-1" style="text-align: center;">Total Amount:</td>
-                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;" id="prevbudget"></td>
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px;">Total:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px; font-size: 14px;" id="prevtotalsex"></td>
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td>
+                                                                            <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Total Amount:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px; font-size: 14px;" id="prevbudget"></td> -->
+                                                                        </tr>        
+                                                                    </tbody>
+                                                                    <thead>
+                                                                        <!-- <th colspan="2" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">Physical</th> -->
+                                                                        <th colspan="2" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">PREXC</th>
+                                                                        <!-- <th colspan="2" class="border" style="vertical-align: middle; text-align: center; padding: 4px;">GAD Budget</th> -->
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr class="border">
+                                                                            <!-- <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px; margin: 0;" >Male:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="targetmale" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"> <textarea class="form-control" name="" id=""></textarea> </td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"> <textarea class="form-control" name="" id=""></textarea> </td>
+                                                                            <!-- <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Tier 1:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="budgetone" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
+                                                                            <!-- <td rowspan="3" style="vertical-align: middle; text-align: center;">10</td> -->
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <thead>
+                                                                        <!-- <th colspan="2" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">Physical</th> -->
+                                                                        <!-- <th colspan="1" class="border"  style="vertical-align: middle; text-align: center; padding: 4px;">PREXC</th> -->
+                                                                        <th colspan="2" class="border" style="vertical-align: middle; text-align: center; padding: 4px;">GAD Budget</th>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr class="border">
+                                                                            <!-- <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px; margin: 0;" >Male:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="targetmale" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px;">Tier 1:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="budgetone" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td>
+                                                                            <!-- <td rowspan="3" style="vertical-align: middle; text-align: center;">10</td> -->
+                                                                        </tr>
+                                                                        <tr class="border">
+                                                                            <!-- <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Female:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="targetfemale" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td> -->
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px;">Tier 2:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"><input id="budgettwo" class="form-control" style=" border:none; font-size: 14px;" placeholder="Type Here"></td>
+                                                                        </tr>
+                                                                        <tr class="border">
+                                                                            <!-- <td class="border col-1" style="text-align: left; vertical-align: middle; padding: 4px;">Total:</td>
+                                                                            <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px; font-size: 14px;" id="prevtotalsex"></td> -->
+                                                                            <!-- <td class="border" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <!-- <td class="border col-1" style="vertical-align: middle; text-align: center; padding: 4px;"></td> -->
+                                                                            <td class="border" style="text-align: left; vertical-align: middle; padding: 4px;">Total Amount:</td>
+                                                                            <td class="border" style="vertical-align: middle; text-align: center; padding: 4px; font-size: 14px;" id="prevbudget"></td>
                                                                         </tr>        
                                                                     </tbody>
                                                                 </table>
@@ -287,16 +427,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @if(auth()->user()->level_id == 3)
                                                 <div class="row">
-                                                    <!-- <div class="col-xxl-12 col-lg-3">
-                                                        <h6>GAD Activities</h6>
-                                                        <div class="dt-ext table-responsive">
-                                                            <div class="project-box">
-                                                                <p id="activity" ></p>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                     <div class="col">
                                                         <div class="mb-3">
                                                             <label>GAD Activities</label>
@@ -304,6 +435,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @if(auth()->user()->level_id == 3)
                                                 <div class="row">
                                                     <div class="col-xxl-6 col-lg-6">
                                                         <!-- <div class="card"> -->
@@ -335,7 +467,6 @@
                                                         <!-- </div> -->
                                                     </div>
                                                 </div>
-                                                @endif
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
@@ -344,6 +475,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endif
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3">
@@ -352,14 +484,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3">
-                                                            <label>Secretariat Remarks</label>
-                                                            <textarea class="form-control" id="remark" type="text"></textarea>
+                                                @if(auth()->user()->level_id == 3)
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="mb-3">
+                                                                <label>Secretariat Remarks</label>
+                                                                <textarea class="form-control" id="remark" type="text"></textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-primary btn-sm" type="button" data-bs-dismiss="modal">Close</button>
@@ -557,6 +691,7 @@
             formData.append('remark', remark);
             formData.append('rawunit', rawunit);
             
+
             // console.log(formData);
             var dataToSend = {
                 id : gadar_id,
@@ -617,5 +752,39 @@
         }
     });
 
+    $(document).ready(function() {
+    // Define your base URL
+    var BASE_URL = "{{ url('/') }}"; // Assuming your Laravel application is served from the root URL
+
+        $('#btn-filter-year').click(function() {
+            event.preventDefault();
+            
+            // Get the selected value
+            var selectedYear = $('#filter_year').val();
+            // var selectedQuarter = $('#quarter').val();
+            console.log(selectedYear);
+            $.ajax({
+                // Construct the URL by appending the route segment to the base URL
+                url: BASE_URL + '/gender_and_development/gadgpb/year', // Your Laravel route for filtering data
+                method: 'GET',
+                data: {
+                    year: selectedYear
+                    // quarter: selectedQuarter
+                },
+                success: function(response) {
+                    // Handle the filtered data response
+                    window.location.href = "{{ route('gadgpb.year', ['year' => ':year']) }}"
+                    .replace(':year', selectedYear)
+                    // .replace(':quarter', selectedQuarter);
+                    $('#filter_year').text(selectedYear);
+                    // $('#quarter').text(selectedQuarter);
+                    // Update your frontend to display the filtered data
+                },
+                error: function(xhr, status, error) {s
+                    console.error(error);
+                }
+            });
+        });
+    });
 </script>
 @endsection

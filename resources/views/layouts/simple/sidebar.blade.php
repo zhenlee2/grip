@@ -52,7 +52,7 @@
 						</div>
 					</li>
 					<!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='gmef' ? 'active' : '' }}" href="{{route('gmef')}}"><i data-feather="file-text"> </i><span>GMEF</span></a></li> -->
-					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='gadgpb' ? 'active' : '' }}" href="{{route('gadgpb')}}"><i data-feather="edit"> </i><span>GAD GPB</span></a></li>
+					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='gadgpb' ? 'active' : '' }}" href="{{route('gadgpb.year', ['year' => date('Y')])}}"><i data-feather="edit"> </i><span>GAD GPB</span></a></li>
 					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='gadar' ? 'active' : '' }}" href="{{route('gadar.year.quarter', ['year' => date('Y'), 'quarter' => '2'])}}"><i data-feather="check-square"> </i><span>GAD AR</span></a></li>
 					<!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='gmef' ? 'active' : '' }}" href=""><i data-feather="file-text"> </i><span>GMEF Action Plan</span></a></li> -->
 					

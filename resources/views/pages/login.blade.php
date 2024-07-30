@@ -1,6 +1,10 @@
 @extends('layouts.authentication.master')
 @section('title', 'Login')
 
+@section('script')
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('css')
 @endsection
 
@@ -29,6 +33,11 @@
                         <input class="form-control" type="password" name="password" required="" placeholder="*********">
                         <div class="show-hide"><span class="show">                         </span></div>
                      </div>
+                     <div class="g-recaptcha" data-sitekey="{{ config('services.nocaptcha.sitekey') }}"></div>
+                        @if ($errors->has('g-recaptcha-response'))
+                              <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                        @endif
+                        <div>
                      <div class="form-group mb-0">
                         <div class="checkbox p-0">
                            <input id="checkbox1" type="checkbox">

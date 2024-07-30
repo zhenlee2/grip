@@ -5,6 +5,20 @@
 @endsection
 
 @section('style')
+<style>
+        .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+            .card .card-header {
+            background-color: #fff;
+            padding: 30px;
+            border-bottom: 1px solid #ecf3fa;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+        }
+</style>
 @endsection
 
 @section('breadcrumb-title')
@@ -27,7 +41,6 @@
 						<div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
 					</div>
 					<div class="card-body">
-						<form>
 							<div class="row mb-2">
 								<div class="profile-title">
 									<div class="media">
@@ -43,31 +56,35 @@
 									</div>
 								</div>
 							</div>
-							<div class="mb-3">
-								<h6 class="form-label">Bio</h6>
-								<textarea class="form-control" rows="3">On the other hand, we denounce with righteous indignation</textarea>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Username</label>
-								<input class="form-control" placeholder="Username">
-							</div>
-							<div class="mb-3">
-								<h6 class="form-label">Change Password</h6>
-								<label class="form-label">Current Password</label>
-								<input class="form-control" type="password" value="password">
-							</div>
-							<div class="mb-3">
-								<label class="form-label">New Password</label>
-								<input class="form-control" type="password" value="password">
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Confirm Password</label>
-								<input class="form-control" type="password" value="password">
-							</div>
-							<div class="form-footer">
-								<button class="btn btn-primary btn-block">Save</button>
-							</div>
-						</form>
+							<form method="POST" action="{{ route('profile.update') }}">
+								@csrf
+								@method('PUT')
+
+								<div class="mb-3">
+									<h6 class="form-label">Bio</h6>
+									<textarea class="form-control" rows="3" name="bio">{{ old('bio', $user->bio) }}</textarea>
+								</div>
+								<div class="mb-3">
+									<label class="form-label">Username</label>
+									<input class="form-control" name="username" value="{{ old('username', $user->username) }}" placeholder="Username">
+								</div>
+								<div class="mb-3">
+									<h6 class="form-label">Change Password</h6>
+									<label class="form-label">Current Password</label>
+									<input class="form-control" type="password" name="current_password">
+								</div>
+								<div class="mb-3">
+									<label class="form-label">New Password</label>
+									<input class="form-control" type="password" name="new_password">
+								</div>
+								<div class="mb-3">
+									<label class="form-label">Confirm Password</label>
+									<input class="form-control" type="password" name="new_password_confirmation">
+								</div>
+								<div class="form-footer">
+									<button class="btn btn-primary btn-block">Save</button>
+								</div>
+							</form>
 					</div>
 				</div>
 			</div>

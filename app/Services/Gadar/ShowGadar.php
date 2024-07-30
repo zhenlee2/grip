@@ -236,30 +236,42 @@ class ShowGadar
         return $gadarStatus;
     }
 
-    public function execute10($selectedYear = '2024')
-    {
-        $data = gadar::select('tbl_gadar.id', 'tbl_gadartime.year')
-            ->leftJoin('tbl_gadartime', 'tbl_gadartime.id','=', 'tbl_gadar.gadartime_id')
-            ->where('tbl_gadartime.year', '=', $selectedYear)
-            // ->where('users.division', '=', $division)
-            ->get();
+    public function execute10($selectedYear = null, $selectedQuarter = null)
+{
+    $level = auth()->user()->level_id;
+    $division = auth()->user()->division_id;
+    $section = auth()->user()->section_id;
 
-        // Extracting IDs from $data collection
-        $dataIds = $data->pluck('id')->toArray();
+    $response = [];
 
-        // Querying Gadaractual records using the extracted IDs
-        $children = Gadaractual::select('tbl_gadaractual.created_at', 'tbl_gadar.responsible_unit', 'tbl_gadar.rawresponsible_unit', 'tbl_gadar.indicator_code', 'tbl_gadaractual.gadar_actualactivity', 'tbl_gadaractual.justification')
-            ->leftJoin('tbl_gadar', 'tbl_gadar.id', '=', 'tbl_gadaractual.gadar_id')
-            ->whereIn('gadar_id', $dataIds)
-            ->where(function($query) {
-                $query->whereNotNull('tbl_gadaractual.gadar_actualactivity')
-                    ->orWhereNotNull('tbl_gadaractual.justification');
-            })
-            ->orderBy('tbl_gadaractual.created_at')
-            ->get(); 
+    $gadars = gadar::select(
+            'tbl_gadar.id', 'tbl_gadar.indicator_code', 'tbl_gadar.rawresponsible_unit', 
+            'tbl_gadar.unit', 'tbl_gadar.responsible_unit', 'tbl_gadaractual.created_at'
+        )
+        ->leftjoin('tbl_gadaractual', 'tbl_gadaractual.gadar_id', '=', 'tbl_gadar.id')
+        ->leftJoin('tbl_gadartime', 'tbl_gadar.gadartime_id', '=', 'tbl_gadartime.id')
+        ->where('tbl_gadaractual.quarter', $selectedQuarter)
+        ->where('tbl_gadartime.year', $selectedYear)
+        ->orderBy('tbl_gadaractual.created_at', 'desc')
+        ->get();
 
-        return $children;
+    foreach ($gadars as $gadar) {
+        // Decode JSON fields
+        $division_arr = $gadar->responsible_unit ? json_decode($gadar->responsible_unit) : [];
+        $section_arr = $gadar->unit ? json_decode($gadar->unit) : [];
+
+        // Check level and responsible units before adding to response
+        if ($level == 1 && in_array($section, $section_arr)) {
+            $response[] = $gadar;
+        } else if ($level == 2 && in_array($division, $division_arr)) {
+            $response[] = $gadar;
+        } else if ($level == 3) {
+            $response[] = $gadar;
+        }
     }
+
+    return $response;
+}
 
     public function execute12($selectedYear = '2024')
     {

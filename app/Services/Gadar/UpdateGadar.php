@@ -58,7 +58,7 @@ class UpdateGadar
             $sectionCode = $section1 ? $section1->sec_code : 'default_section';
        
             // Create a base path based on user, office, and section
-        $baseFilePath = "public/storage/$year/$quarter/$divisionCode/$sectionCode";
+        $baseFilePath = "public/storage/GADAR/$year/$quarter/$divisionCode/$sectionCode";
                 
                 $gadar_id = $request->input('gadar_id'); // Get the input from the request
 

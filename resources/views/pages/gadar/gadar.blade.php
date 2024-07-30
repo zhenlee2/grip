@@ -14,9 +14,21 @@
 
 @section('style')
     <style>
+        .page-wrapper .page-body-wrapper .page-title {
+            padding-top: 25px;
+            padding-bottom: 5px;
+        }
+            .card .card-header {
+            background-color: #fff;
+            padding: 30px;
+            border-bottom: 1px solid #ecf3fa;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+        }
         /* Add custom CSS for freezing table header */
         .table-container {
-            max-height: 550px; /* Adjust max-height as needed */
+            max-height: 600px; /* Adjust max-height as needed */
             overflow-y: auto;
         }
         .sticky-header th {
@@ -24,17 +36,77 @@
             color: white;
             top: 0;
             background-color: #57bb8a; /* Adjust background color if needed */
-            z-index: 1; /* Ensure it overlays other content properly */
+            /* z-index: 1; Ensure it overlays other content properly */
             border: 1px solid #ccc; /* Add border to table header cells */
             padding: 0px; /* Adjust padding as needed */
             text-align: center; /* Center align text */
             vertical-align: middle; /* Center vertical alignment */
         }
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-container, .dropdown-basic {
+            display: flex;
+            align-items: top;
+            gap: 5px;
+        }
+
+    </style>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            outline: 1px solid #d64dcf; /* Outline for the button */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            outline: 1px solid #d64dcf; /* Outline for the dropdown content */
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            outline: none; /* Remove outline from links */
+        }
+
+        .dropdown-content a:hover {
+            background-color: #d64dcf;
+            color: #d64dcf;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #d64dcf;
+        }
     </style>
 @endsection
 
 @section('breadcrumb-title')
-<h3>Gender and Development Accomplishment Report</h3>
+<h5>Gender and Development Accomplishment Report</h5>
 @endsection
 
 @section('breadcrumb-items')
@@ -48,53 +120,56 @@
       <div class="col-sm-12">
          <div class="card">
             <div class="card-header" style="padding: 20px;">
-                <div align="center">
-                    <div  class="dt-ext table-responsive table-container">
-                        <table class="table " style="padding:0px 0px; border:none;">
-                            <tr>
-                                <td style="border:none;">
-                                    <select id="filter_year" class="btn btn-outline-primary" >
-                                        <option value="" disabled>Select Year</option>
-                                        <option value="0000">0000</option>
-                                        @foreach ($filteryear as $key => $y)
-                                            <option value="{{$y->year}}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
-                                                {{$y->year}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                <!-- </td>
-                                <td style="text-align:left"> -->
-                                    <select name="quarter" id="quarter" class="btn btn-outline-primary bordered" data-control="select2">
-                                        <option value="" disabled {{ is_null($selectedQuarter) ? 'selected' : '' }}>Select Quarter</option>
-                                        <option value="1" {{ $selectedQuarter == '1' ? 'selected' : '' }}>1st Quarter</option>
-                                        <option value="2" {{ $selectedQuarter == '2' ? 'selected' : '' }}>2nd Quarter</option>
-                                        <option value="3" {{ $selectedQuarter == '3' ? 'selected' : '' }}>3rd Quarter</option>
-                                        <option value="4" {{ $selectedQuarter == '4' ? 'selected' : '' }}>4th Quarter</option>
-                                    </select>
-                                    <!-- <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Quarter</span> -->
-                                    <span class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</span>
-                                </td>
-                                <!-- <td class="col-3" ></td> -->
-                                <td  style="text-align:right; border:none;">
-                                    <a id="exportButton" class="btn btn-outline-success">
-                                        <i class="icofont icofont-file-excel"></i>
-                                        <span> Generate</span>
-                                    </a>
-                                    <a href="{{ url('/gadar-pdf') }}" class="btn btn-outline-primary" target="_blank">Download PDF</a>
-                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View Status" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#statusModal"><i class="icofont icofont-ui-check"></i><span> Status</span></button>
-                                    <button class="btn btn-outline-success " type="submit" id="view" data-bs-original-title="View MOV's" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#movsModal"><i class="fa fa-file-photo-o"></i><span> MOVs</span></button>
-                                    <button class="btn btn-outline-secondary" type="submit" id="view" data-bs-original-title="View GAD AR Logs" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#logModal"><i class="icon-harddrives"></i><span> Logs</span></button>
-                                    <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
-                                </td>
-                            </tr>
-                        </table>
+                <div class="filter-container">
+                    <div class="select-container">
+                        <select id="filter_year" class="btn btn-outline-primary">
+                            <option value="" disabled>Select Year</option>
+                            <option value="0000">0000</option>
+                            @foreach ($filteryear as $key => $y)
+                                <option value="{{ $y->year }}" {{ $selectedYear == $y->year ? 'selected' : '' }}>
+                                    {{ $y->year }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <select name="quarter" id="quarter" class="btn btn-outline-primary bordered" data-control="select2">
+                            <option value="" disabled {{ is_null($selectedQuarter) ? 'selected' : '' }}>Select Quarter</option>
+                            <option value="1" {{ $selectedQuarter == '1' ? 'selected' : '' }}>1st Quarter</option>
+                            <option value="2" {{ $selectedQuarter == '2' ? 'selected' : '' }}>2nd Quarter</option>
+                            <option value="3" {{ $selectedQuarter == '3' ? 'selected' : '' }}>3rd Quarter</option>
+                            <option value="4" {{ $selectedQuarter == '4' ? 'selected' : '' }}>4th Quarter</option>
+                        </select>
+                        <button class="btn bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter</button>
+                        <button class="btn btn-outline-primary" type="submit" id="view" data-bs-original-title="Additional Indicator" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#addIndicatorModal"><i class="icofont icofont-plus-circle"></i><span> Add Indicator</span></button>
                     </div>
+                    
+                    <div class="dropdown-basic">
+                        <div class="dropdown">
+                            <button class="dropbtn " style="color: #d64dcf;" type="button">Summary <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <div class="dropdown-content">
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#statusModal">Status</a>
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#movsModal">MOV's</a>
+                                <a type="submit" id="view" data-bs-toggle="modal" data-bs-target="#logModal">Log</a>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropbtn" style="color: #d64dcf;" type="button">Generate Report <span><i class="icofont icofont-arrow-down"></i></span></button>
+                            <div class="dropdown-content">
+                                <a id="exportButton">Excel</a>
+                                <a id="pdfButton" href="{{ url('/gadar-pdf') }}" target="_blank">PDF</a>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="card-body">
+                               
                 <div class="dt-ext table-responsive table-container">
                   <table class="table border table-xs" style="padding: 1px 1px; " >
                      <thead class="sticky-header">
+                        <th class="border col-1 p-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Action</th>
                         <th class="border " style="text-align: center; vertical-align: middle; padding: 4px;">ID</th>
                         <th class="border col-4" style="text-align: center; vertical-align: middle; padding: 4px;">Gender Issue or GAD Mandate</th>
                         <th class="border col-2" style="text-align: center; vertical-align: middle; padding: 4px;">Results Indicator</th>
@@ -102,12 +177,12 @@
                         <th class="border" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px; display:none;">Female</th> -->
                         @foreach ($gadar as $key => $g)
                             @if ($key === 0)
-                                <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Physical Target</th>
+                                <th class="border p-1" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Physical Target</th>
                             @endif
                         @endforeach
                         @foreach ($gadar as $key => $g)
                             @if ($key === 0)
-                            <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Actual Accomplishment</th>
+                            <th class="border p-1" style="text-align: center; vertical-align: middle; padding: 1px;">FY {{$g->year}} Actual Accomplishment</th>
                             @endif
                         @endforeach
                         <!-- <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px">Tier 1</th> -->
@@ -119,9 +194,9 @@
                         <th class="border col-2" style="text-align: center; vertical-align: middle; padding: 1px;">Actual Activities</th>
                         <!-- <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">Lead Division/Office</th> -->
                         <th class="border" style="text-align: center; vertical-align: middle; padding: 1px;">Responsible Unit/Office</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks / Justification</th>
-                        <th class="border col-2" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks from GAD Focal Person</th>
-                        <th class="border col-1 p-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle;">Action</th>
+                        <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks / Justification</th>
+                        <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">Remarks from GAD Focal Person</th>
+                        
                      </thead>
                      <tbody>
                         <tr>
@@ -137,6 +212,19 @@
                                 <tr class="budget-rowa">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -158,17 +246,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }} " data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;" data-activity="{{$g->gad_activity }}">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -177,20 +274,18 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
+                                    <!-- <td class="border p-1" align="center">
                                         <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
                                         <br>
                                         <br>
                                         @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
                                             @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
                                                 <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
                                             @elseif($g->verify_id >= 0)
                                                 <span class="badge badge-success">Verified</span>
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> -->
                                 </tr>
                             @endif
                         @endforeach
@@ -213,6 +308,19 @@
                                 <tr class="budget-rowb">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -234,17 +342,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -253,20 +370,7 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
-                                        <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
-                                        <br>
-                                        <br>
-                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
-                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
-                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
-                                            @elseif($g->verify_id >= 0)
-                                                <span class="badge badge-success">Verified</span>
-                                            @endif
-                                        @endif
-                                    </td>
+                                    
                                 </tr>
                             @endif
                         @endforeach
@@ -289,6 +393,19 @@
                                 <tr class="budget-rowc">
                                     <td class="border p-1" style="text-align: center; display:none;" data-year="{{ $g->year }}">{{ $g->year }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-id="{{ $g->id }}">{{ $g->id }}</td>
+                                    
+                                    <td class="border p-1" align="center">
+                                        <button class="btn-xs btn-outline-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
+                                        <br>
+                                        <br>
+                                        @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
+                                            @if($g->verify_id == 0 || $g->verify_id == NULL)
+                                                <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
+                                            @elseif($g->verify_id >= 0)
+                                                <span class="badge badge-success">Verified</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="border p-1" style="{{ $textRed }} text-align: center;" id="indicatorCode" data-code="{{ $g->indicator_code }}">{{ $g->indicator_code }}
                                         @if(auth()->user()->level_id == 1)
                                             @if($g->verify_id == 0 && $g->verify_id == NULL)
@@ -310,17 +427,26 @@
                                     <!-- End Previous Year -->
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetm="{{ $g->target_male }}">{{ $g->target_male }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-targetf="{{ $g->target_female }}">{{ $g->target_female }}</td>
-                                    <td class="border p-1" style="text-align: center;" data-targetts="{{ $g->target_totalsex }}">{{ $g->target_totalsex }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-targetts="{{ $g->target_totalsex }}">
+                                        <span>M: {{ $g->target_male }}</span><br>
+                                        <span>F: {{ $g->target_female }}</span><br>
+                                        <span>T: {{ $g->target_totalsex }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phymale="{{ $g->physical_male}}">{{$g->physical_male}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyfemale="{{ $g->physical_female}}">{{$g->physical_female}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-phyother="{{$g->physical_other}}">{{$g->physical_other}}</td>
-                                    <td class="border p-1" style="text-align: center;" data-phytotal="{{$g->physical_sextotal}}">{{ number_format($g->physical_sextotal, 0, '.', ',') }}</td>
+                                    <td class="border p-1" style="text-align: center; {{ $textRed }}" data-phytotal="{{$g->physical_sextotal}}">
+                                        <span>M: {{ number_format($g->physical_male, 0, '.', ',') }}</span><br>
+                                        <span>F: {{ number_format($g->physical_female, 0, '.', ',') }}</span><br>
+                                        <span>Oth: {{ number_format($g->physical_other, 0, '.', ',') }}</span><br>
+                                        <span>T: {{ number_format($g->physical_sextotal, 0, '.', ',') }}</span>
+                                    </td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tierone="{{ $g->budget_tierone }}">{{ $g->budget_tierone }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwo="{{ $g->budget_tiertwo }}">{{ $g->budget_tiertwo }}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-totalamount="{{ $g->budget_totalamount}}">{{ number_format( $g->budget_totalamount, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tieroneexpen="{{ $g->tierone_actual }}">{{ $g->tierone_actual}}</td>
                                     <td class="border p-1" style="text-align: center; display:none;" data-tiertwoexpen="{{ $g->tiertwo_actual }}">{{ $g->tiertwo_actual}}</td>
-                                    <td class="border p-1 col-1" style="text-align: center;" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
+                                    <td class="border p-1 col-1" style="text-align: center; {{ $textRed }}" data-expen="{{$g->total_actualexpen}}">{{ number_format($g->total_actualexpen, 1, '.', ',') }}</td>
                                     <td class="border p-1" style="display:none;">{{ $g->pap_desc }}</td>
                                     <td class="border p-1" style="{{ $textRed }} padding: 1px;">{{ $g->gad_activity }}</td>
                                     <td class="border p-1" style="padding: 4px;" data-actualact="{{$g->gadar_actualactivity}}">{{$g->gadar_actualactivity}}</td>
@@ -329,20 +455,18 @@
                                     <td class="border p-1" style="padding: 4px;" data-justify="{{$g->justification}}">{{$g->justification}}</td>
                                     <td class="border p-1" style="padding: 4px; color: red;" data-remark="{{$g->remark_secretariat}}">{{$g->remark_secretariat}}</td>
                                     <!-- <td class="border p-1" style="padding: 4px;" ></td> -->
-                                    <td class="border p-1" align="center">
+                                    <!-- <td class="border p-1" align="center">
                                         <button class="btn-sm btn-success " type="submit" id="view" onclick="get_indicator()" data-bs-original-title="Add Accomplishment" data-bs-toggle="modal" data-idUpdate="" data-bs-target="#editModal" {{$disableAddButton}}><span class="icon-save-alt"></span></button>
                                         <br>
                                         <br>
                                         @if(auth()->user()->level_id == 2 || auth()->user()->level_id == 3)
                                             @if($g->verify_id == 0 || $g->verify_id == NULL)
-                                                <!-- <a data-bs-toggle="modal" data-bs-target="#approveModal"><span class="badge badge-danger">Verify</span></a> -->
-                                                <!-- <a id="verify" value="1"><span class="badge badge-danger">Verify</span></a> -->
                                                 <button class="btn btn-xs btn-outline-danger" type="submit" id="verify" onclick="verify()" {{$disableAddButton}}>Verify</button>
                                             @elseif($g->verify_id >= 0)
                                                 <span class="badge badge-success">Verified</span>
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> -->
                                 </tr>
                             @endif
                         @endforeach
@@ -630,10 +754,9 @@
                                                     </tr>
                                                 <tbody>
                                                     <tr class="border">
-                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="division" style="border:none; font-size: 14px;" placeholder="Type Here your Section"></input></td>
-                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="section" style=" border:none; font-size: 14px;" placeholder="Type Here your Division"></input></td>
+                                                        <!-- <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="division" style="border:none; font-size: 14px;" placeholder="Type Here your Section"></input></td>
+                                                        <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="section" style=" border:none; font-size: 14px;" placeholder="Type Here your Division"></input></td> -->
                                                         <td  colspan="1" style="text-align: center; vertical-align: middle;"><input class="form-control" id="file-input" style=" border:none; font-size: 14px;" name="file" type="file" style="border:none;" placeholder="Type Here your Section" multiple></input></td>
-
                                                     </tr>                                        
                                                 </tbody>
                                             </table>
@@ -744,49 +867,26 @@
             <div class="dt-ex">
                     <table class="table border table-sm" style=" padding: 1px 1px; " id="export-button">
                         <thead>
-                            <!-- <tr>
-                                <th colspan="5" class="border" style="text-align: center; vertical-align: middle;">Upload MOV's</th>
-                            </tr> -->
+                           
                             <tr>
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Date Input</th>
-                                <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Time</th>
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Count</th> -->
+                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Time</th> -->
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Code</th>
                                 <th colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">Division/Section</th>
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">Section</th> -->
-                                <!-- <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">File Size</th>
-                                <th colspan="1" class="border" style="text-align: center; vertical-align: middle;">Date Uploaded</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($gadar as $l)
-                            @if ($l->verify_id)
+                        @foreach($gadarlog as $log)
                                 <tr class="border">
                                     <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('Y-m-d')}}
-                                        @endif
-                                    </td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('h:i:s A')}}
+                                        @if ($log->created_at)
+                                            {{ \Carbon\Carbon::parse($log->created_at)->format('F d, Y h:i:s') }}
                                         @endif
                                     </td>
                                     <!-- <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$loop->iteration}}</td> -->
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$l->indicator_code}}</td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$l->rawresponsible_unit}}</td>
-                                    <!-- <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('Y-m-d')}}
-                                        @endif
-                                    </td>
-                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">
-                                        @if($l->created_att)
-                                            {{$l->created_att->format('h:i:s A')}}
-                                        @endif
-                                    </td> -->
+                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$log->indicator_code}}</td>
+                                    <td colspan="1" class="border" style="text-align: center; vertical-align: middle; padding: 4px;">{{$log->rawresponsible_unit}}</td>
                                 </tr>
-                            @endif
                         @endforeach             
                         </tbody>
                     </table>
@@ -813,7 +913,7 @@
                 <div class="modal-header">
                             @foreach ($gadar as $key => $g)
                                 @if ($key === 0)
-                                <h5 class="modal-title" id="updatelogsModalLabel">Submitted Status {{$g->year}}</h5>
+                                <h5 class="modal-title" id="updatelogsModalLabel">Status of Submission {{$g->year}}</h5>
                                 <!-- <th class="border col-1" rowspan="1" colspan="1" style="text-align: center; vertical-align: middle; padding: 4px;">FY {{$g->year}} Actual Accomplishment</th> -->
                                 @endif
                             @endforeach
@@ -1247,8 +1347,8 @@
         var actualActivity = $('#actualActivity').val();
         var justification = $('#justification').val();
         var files = $('#file-input')[0].files;
-        var division = $('#division').val();
-        var section = $('#section').val();
+        // var division = $('#division').val();
+        // var section = $('#section').val();
         var selectedQuarter = $('#quarter').val();
         var remark = $('#remark').val();
         var selectedYear = $('#filter_year').val();
@@ -1277,8 +1377,8 @@
         
         // console.log('actualActivity:', formData.get('actualActivity'));
         // formData.append('gadaractual_id', id);
-        formData.append('division', division);
-        formData.append('section', section);
+        // formData.append('division', division);
+        // formData.append('section', section);
         
         var dataToSend = {
             id: gadar_id,
@@ -1671,6 +1771,27 @@ $(document).ready(function() {
         var exportUrl = baseUrl.replace(':year', selectedYear || 'null').replace(':quarter', selectedQuarter || 'null');
 
         $('#exportButton').attr('href', exportUrl);
+    }
+
+    // Update the href when the select elements change
+    $('#filter_year, #quarter').on('change', function() {
+        updateExportHref();
+    });
+
+    // Initial call to set the href based on initial selections
+    updateExportHref();
+});
+
+$(document).ready(function() {
+    function updateExportHref() {
+        var selectedYear = $('#filter_year').val();
+        var selectedQuarter = $('#quarter').val();
+        var baseUrl = "{{ route('gadar-pdf', ['year' => ':year', 'quarter' => ':quarter']) }}";
+
+        // Replace placeholders with actual values
+        var exportUrl = baseUrl.replace(':year', selectedYear || 'null').replace(':quarter', selectedQuarter || 'null');
+
+        $('#pdfButton').attr('href', exportUrl);
     }
 
     // Update the href when the select elements change

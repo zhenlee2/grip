@@ -18,7 +18,10 @@ Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Route::post('auth/login', 'AuthController@login_request')->name('auth.login');
 Route::get('auth/logout', 'AuthController@logout_request')->name('auth.logout');
 
-//PAGES
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 //PERFORMANCE CONTRACT
 Route::prefix('performance_contract')->group(function () {
@@ -46,6 +49,7 @@ Route::prefix('gender_and_development')->group(function () {
     Route::get('gad', 'GenderDevelopmentController@index')->name('gad');
     Route::get('gmef', 'GmefController@index')->name('gmef');
     Route::get('gadgpb', 'GadgpbController@index')->name('gadgpb');
+    Route::get('gadgpb/{year}', 'GadgpbController@index')->name('gadgpb.year');
     Route::post('gadgpb/upload', 'GadgpbController@upload')->name('gadgpb.upload');
     Route::get('gadar/{year}/{quarter}', 'GadarController@index')->name('gadar.year.quarter');
     Route::get('gadar', 'GadarController@index')->name('gadar');
@@ -58,7 +62,7 @@ Route::prefix('gender_and_development')->group(function () {
     // Route::get('divisionreview', 'DivisionreviewController@index')->name('divisionreview');
     });
 
-    Route::get('/gadar-pdf', 'PDFController@generatePDF')->name('gadar-pdf');
+    Route::get('/gadar-pdf/{year}/{quarter}', 'PDFController@generatePDF')->name('gadar-pdf');
     // Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 //Show OPC
 // Route::get('/opcpage/showopc', 'ShowopcController@index')->name('show');

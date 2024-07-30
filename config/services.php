@@ -37,5 +37,9 @@ return [
         'spreadsheet_id' => env('GOOGLE_SPREADSHEET_ID'),
         'service_account_credentials' => env('GOOGLE_SERVICE_ACCOUNT_CREDENTIALS'),
     ],
-
+    
+    'nocaptcha' => [
+    'secret' => env('NOCAPTCHA_SECRET'),
+    'sitekey' => env('NOCAPTCHA_SITEKEY'),
+],
 ];
