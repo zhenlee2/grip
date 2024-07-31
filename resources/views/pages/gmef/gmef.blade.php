@@ -98,7 +98,7 @@
                                                         <table class="table border gy-6 table-sm">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="text-center" style="color: white; background-color: #674ea7; vertical-align: middle;" colspan="4">
+                                                                    <th class="text-center" style="color: white; background-color: #674ea7; vertical-align: middle;" colspan="5">
                                                                         <h5>POLICY ORGANIZATIONAL ASSESSMENT QUESTIONNAIRE</h5>
                                                                     </th>
                                                                 </tr>
@@ -109,18 +109,19 @@
                                                                     <td class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;"  colspan="1">
                                                                         <h5 id="grandTotalCell">0</h5>
                                                                     </td>
-                                                                    <td class="border" style="color: white; background-color: #c6b6d9; vertical-align: middle;" colspan="1"></td>
+                                                                    <td class="border" style="color: white; background-color: #c6b6d9; vertical-align: middle;" colspan="2"></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border w-400px p-1" rowspan="2" style="color: white; background-color: #c6b6d9; vertical-align: middle;">DESCRIPTORS</th>
                                                                     <th class="text-center border p-1" colspan="1" style="color: white; background-color: #c6b6d9; vertical-align: middle;">SCORE</th>
                                                                     <th class="text-center border p-1" colspan="1" rowspan="2" style="color: white; background-color: #c6b6d9; vertical-align: middle;">Score Per Item</th>
-                                                                    <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" rowspan="2">Means of Verification/Remarks</th>
+                                                                    <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" rowspan="1">Means of Verification/Remarks</th>
+                                                                    <th class="text-center border p-1" style="color: white; background-color: #c6b6d9; vertical-align: middle;" rowspan="1">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr style="cursor: pointer;" >
-                                                                    <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">
+                                                                    <th  colspan="6" class="border p-1 " data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">
                                                                         @foreach($indicator as $key => $g)
                                                                             @if($g->indicator_id == 1)  
                                                                                 {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
@@ -129,26 +130,50 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $key => $g) 
+                                                                    @foreach($questionnaire as $g)
                                                                         @if($g->indicator_id == 1)
-                                                                            <tr class="collapse" id="collapse1" aria-labelledby="heading1" data-bs-parent="#accordionclose">
-                                                                                    <td class="border p-1" colspan="1">
-                                                                                            {{ $g->descriptors }} <i>{{$g->desc_parenthesis}}</i>
-                                                                                    </td>
-                                                                                <td class="border p-1" colspan="1">
-                                                                                    <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                                        <option value="0" {{ $g->score == 0 ? 'selected' : '' }}>No Policy</option>
-                                                                                        <option value="0.8333333333333333" {{ $g->score == 0.8333333333333333 ? 'selected' : '' }}>One Element</option>
-                                                                                        <option value="1.666666666666667" {{ $g->score == 1.666666666666667 ? 'selected' : '' }}>All Elements</option>
-                                                                                    </select>
-                                                                                <!-- Container for displaying full descriptions -->
-                                                                                <div id="description-container" class="mt-2"></div>
+                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                <td class="border p-1">
+                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                 </td>
-                                                                                <td class="border p-1">awdawdawd</td>
-                                                                                <td class="border p-1">awdawd</td>
+                                                                                <td class="border p-1">
+                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                        <option value="" disabled selected>Select score</option>
+                                                                                        @foreach($g->scores as $score)
+                                                                                                <option value="{{ $score->point }}">
+                                                                                                {{ $score->score_desc }}
+                                                                                                </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    <!-- Container for displaying full descriptions -->
+                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1">
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead>
+                                                                                                <th class="border">1</th>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <td class="border">1</td>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td style="vertical-align: middle; text-align: center;">
+                                                                                    <a class="btn btn-outline-secondary btn-sm" href="#" data-bs-original-title="View" title="View">
+                                                                                        <span class="icon-eye"></span>
+                                                                                    </a>
+                                                                                </td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="heading2">
@@ -160,26 +185,46 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $key => $g)
+                                                                    @foreach($questionnaire as $g)
                                                                         @if($g->indicator_id == 2)
-                                                                            <tr class="collapse" id="collapse2" aria-labelledby="heading2" data-bs-parent="#accordionclose">
-                                                                                    <td class="border p-1" colspan="1">
-                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
-                                                                                    </td>
-                                                                                <td class="border p-1" colspan="1">
-                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                                    <option value="0">No Policy</option>
-                                                                                    <option value="0.8333333333333333">One Element</option>
-                                                                                    <option value="1.666666666666667">All Elements</option>
-                                                                                </select>
-                                                                                <!-- Container for displaying full descriptions -->
-                                                                                <div id="description-container" class="mt-2"></div>
+                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                <td class="border p-1">
+                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                 </td>
-                                                                                <td class="border p-1">awdawdawd</td>
-                                                                                <td class="border p-1">awdawd</td>
+                                                                                <td class="border p-1">
+                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                        <option value="" disabled selected>Select score</option>
+                                                                                        @foreach($g->scores as $score)
+                                                                                                <option value="{{ $score->point }}">
+                                                                                                {{ $score->score_desc }}
+                                                                                                </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    <!-- Container for displaying full descriptions -->
+                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1">
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead>
+                                                                                                <th class="border">1</th>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <td class="border">1</td>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td></td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 2 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="heading3">
@@ -191,26 +236,46 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $key => $g)
-                                                                        @if($g->indicator_id == 3)
-                                                                            <tr class="collapse" id="collapse3" aria-labelledby="heading3" data-bs-parent="#accordionclose">
-                                                                                    <td class="border p-1" colspan="1">
-                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                    @foreach($questionnaire as $g)
+                                                                            @if($g->indicator_id == 3)
+                                                                                <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                    <td class="border p-1">
+                                                                                        {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                     </td>
-                                                                                <td class="border p-1" colspan="1">
-                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                                    <option value="0">No Policy</option>
-                                                                                    <option value="0.8333333333333333">One Element</option>
-                                                                                    <option value="1.666666666666667">All Elements</option>
-                                                                                </select>
-                                                                                <!-- Container for displaying full descriptions -->
-                                                                                <div id="description-container" class="mt-2"></div>
-                                                                                </td>
-                                                                                <td class="border p-1">awdawdawd</td>
-                                                                                <td class="border p-1">awdawd</td>
-                                                                            </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                                    <td class="border p-1">
+                                                                                        <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                            <option value="" disabled selected>Select score</option>
+                                                                                            @foreach($g->scores as $score)
+                                                                                                    <option value="{{ $score->point }}">
+                                                                                                    {{ $score->score_desc }}
+                                                                                                    </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                        <!-- Container for displaying full descriptions -->
+                                                                                        <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                    </td>
+                                                                                    <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                    <td class="border p-1">
+                                                                                        <div class="dt-ext table-responsive">
+                                                                                            <table class="table border table-sm">
+                                                                                                <thead>
+                                                                                                    <th class="border">1</th>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                    <td class="border">1</td>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 3 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="heading4">
@@ -222,26 +287,46 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $key => $g)
+                                                                @foreach($questionnaire as $g)
                                                                         @if($g->indicator_id == 4)
-                                                                            <tr class="collapse" id="collapse4" aria-labelledby="heading4" data-bs-parent="#accordionclose">
-                                                                                    <td class="border p-1" colspan="1">
-                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
-                                                                                    </td>
-                                                                                <td class="border p-1" colspan="1">
-                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                                    <option value="0">No Policy</option>
-                                                                                    <option value="0.8333333333333333">One Element</option>
-                                                                                    <option value="1.666666666666667">All Elements</option>
-                                                                                </select>
-                                                                                <!-- Container for displaying full descriptions -->
-                                                                                <div id="description-container" class="mt-2"></div>
+                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                <td class="border p-1">
+                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                 </td>
-                                                                                <td class="border p-1">awdawdawd</td>
-                                                                                <td class="border p-1">awdawd</td>
+                                                                                <td class="border p-1">
+                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                        <option value="" disabled selected>Select score</option>
+                                                                                        @foreach($g->scores as $score)
+                                                                                                <option value="{{ $score->point }}">
+                                                                                                {{ $score->score_desc }}
+                                                                                                </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    <!-- Container for displaying full descriptions -->
+                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1">
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead>
+                                                                                                <th class="border">1</th>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <td class="border">1</td>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td></td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 4 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="true" aria-controls="heading5">
@@ -253,430 +338,49 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $key => $g)
+                                                                    @foreach($questionnaire as $g)
                                                                         @if($g->indicator_id == 5)
-                                                                            <tr class="collapse" id="collapse5" aria-labelledby="heading5" data-bs-parent="#accordionclose">
-                                                                                    <td class="border p-1" colspan="1">
-                                                                                            {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
-                                                                                    </td>
-                                                                                <td class="border p-1" colspan="1">
-                                                                                <select id="score-select" class="border p-1" onchange="updateDescriptionAndScore(this)">
-                                                                                            <option value="0" {{ $g->score == 0 ? 'selected' : '' }}>No Policy</option>
-                                                                                            <option value="0.8333333333333333" {{ $g->score == 0.8333333333333333 ? 'selected' : '' }}>One Element</option>
-                                                                                            <option value="1.666666666666667" {{ $g->score == 1.666666666666667 ? 'selected' : '' }}>All Elements</option>
-                                                                                        </select>
-                                                                                <!-- Container for displaying full descriptions -->
-                                                                                <div id="description-container" class="mt-2"></div>
+                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                <td class="border p-1">
+                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                 </td>
-                                                                                <td class="border p-1">awdawdawd</td>
-                                                                                <td class="border p-1">awdawd</td>
+                                                                                <td class="border p-1">
+                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                        <option value="" disabled selected>Select score</option>
+                                                                                        @foreach($g->scores as $score)
+                                                                                                <option value="{{ $score->point }}">
+                                                                                                {{ $score->score_desc }}
+                                                                                                </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    <!-- Container for displaying full descriptions -->
+                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1">
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead>
+                                                                                                <th class="border">1</th>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <td class="border">1</td>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td></td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
                                                                 </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 5 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
+                                                                </tr>
                                                             </tbody>
-                                                                    
-                                                                    
-                                                                         <!--  <tr>
-                                                                            <td class="border p-1" colspan="6">1. Issuance of Foundational Policies <i>(max score: 5; for each item or question, 1.67)</i></td>
-                                                                        </tr>
-                                                                        <tr >
-                                                                            <td class="border p-1">1.1 Has the organization issued policies articulating support to GAD mandates and establishing the  essential elements of GAD Planning and Budgeting? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td>
-                                                                            <select id="score-select" class="border p-1" onchange="updateDescription(this.value)">
-                                                                                    <option value="0">No Policy</option>
-                                                                                    <option value="0.8333333333333333">One Element</option>
-                                                                                    <option value="1.666666666666667">All Elements</option>
-                                                                                </select>
-
-                                                                               
-                                                                                <div id="description-container" class="mt-2 p-1"></div>
-                                                                            </td>
-                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;">
-                                                                                <input type="text" id="score-input" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center" disabled>
-                                                                            </td>
-                                                                            <td class="w-175px border p-1" colspan="2">Enumerate the GAD related policies issued (e.g., policy on setting up GFPS or GAD Office; collection and maintenance of sex-disaggregated database; conduct of organization-wide gender audit; capacity-building plan for GFPS and HR of organization).
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <thead>
-                                                                                    <th class="text-center border p-1" >Policy Title</th>
-                                                                                    <th class="text-center border p-1">Purpose/Subject Matter</th>
-                                                                                    <th class="text-center border p-1">Date Issued</th>
-                                                                                </tr>
-                                                                                </thead>
-                                                                                <tr> 
-                                                                                    <td class="w-175px border">    </td>
-                                                                                    <td class="w-175px border">    </td>
-                                                                                    <td class="w-175px border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="w-175px border">    </td>
-                                                                                    <td class="w-175px border">    </td>
-                                                                                    <td class="w-175px border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr> -->
-                                                                        <!-- <tr>
-                                                                            <td class="border p-1">1.2 Has the organization conducted a review of existing policies for consistency with emerging GAD issues? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell1(this, 'score-input1', 0)">No policy reviewed</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell1(this, 'score-input1', 0.8333333333333333)">Some existing policies reviewed but no new policies re-issued and/ or revised</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell1(this, 'score-input1', 1.666666666666667)">Some existing policies reviewed, revised and re-issued</td>
-                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;"><input type="text" id="score-input1" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center" placeholder="type score here." disabled></td>
-                                                                            <td class="p-1" colspan="2"> Enumerate policies reviewed and/or re-issued/ revised for consistency with new GAD issuances (e.g. policy reconstituting the GAD Focal Point System based on MC 2011-01, etc.).
-                                                                                <table class="table border table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Title</th>
-                                                                                    <th class="text-center border">Type</th>
-                                                                                    <th class="text-center border">Purpose/ Subject Matter</th>
-                                                                                    <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="w-175px border p-1">1.3 Has the organization issued broad statements of intentions or aspirations reflecting its support for GAD- related activities? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="w-175px border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell1(this, 'score-input2', 0)">No broad statement supporting GAD- related activities issued</td>
-                                                                            <td class="w-175px border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell1(this, 'score-input2', 0.8333333333333333)">1-2 broad statements supporting GAD- related activities issued</td>
-                                                                            <td class="w-175px border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell1(this, 'score-input2', 1.666666666666667)">3 or more broad statements supporting GAD-related activities issued</td>
-                                                                            <td class="text-center border p-1" style="border: none; color: white; background-color: #c6b6d9; vertical-align: middle;"><input type="text" id="score-input2" required style="border: none; color: white; background-color: #c6b6d9;" name="enable_two" class="text-center" placeholder="type score here." disabled></td>
-                                                                            <td class="w-175px border p-1" colspan="2">Enumerate broad statements issued in support of GAD related activities/issues (e.g., memorandum for the organization to participate in Women’s Month activities, 18-day Campaign on VAW, etc).
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Title</th>
-                                                                                    <th class="text-center border">Type</th>
-                                                                                    <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                        <th class="text-center border" colspan="4">Sub-total GMEF Score <i>(Level 1 Policy)</i></th>
-                                                                        <th class="text-center border" colspan="1" id="subtotalCell1" style="border: none; color: white; background-color: #835ca6;" >0</th>
-                                                                        <th class="text-center border" colspan="1"></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center border" colspan="6"></td>
-                                                                        </tr>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="p-1" colspan="6">2. Issuance of Policies to mainstream GAD in the Organization <i>(max score: 5; for each item or question, 1.67)</i></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                       
-                                                                    </thead>
-                                                                        <tr>
-                                                                            <td class="border p-1">2.1 Has the organization issued policies reflecting its interest for gender mainstreaming? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell2(this, 'score-input3', 0)">No policy reflecting the organization’s interest for gender mainstreaming issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell2(this, 'score-input3', 0.8333333333333333)">1-2 policies reflecting the organization’s interest for gender mainstreaming issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell2(this, 'score-input3', 1.666666666666667)">3 or more policies reflecting the organization’s interest for gender mainstreaming issued</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input3" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">List all policies issued by the organization relate to gender mainstreaming (e.g. issuance of DOH department order to integrate GAD in all programs):
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Title</th>
-                                                                                    <th class="text-center border">Type</th>
-                                                                                    <th class="text-center border">Purpose/ Subject Matter</th>
-                                                                                    <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1">2.2 Has the organization issued policies addressing the gender needs of the clients (internal and external)? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell2(this, 'score-input4', 0)">No policy reflecting gender needs of internal and/or external clients issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell2(this, 'score-input4', 0.8333333333333333)">1-2 policies reflecting gender needs of internal and/or external clients issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell2(this, 'score-input4', 1.666666666666667)">3 or more policies, reflecting gender needs of internal and/ or external clients issued</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input4" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Enumerate all policies issued addressing gender needs of internal and external clients of the organization (e.g. issuance of policy for the establishment of a child-minding center for use of employees and clients with small children)
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Title</th>
-                                                                                    <th class="text-center border">Type</th>
-                                                                                    <th class="text-center border">Purpose/ Subject Matter</th>
-                                                                                    <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1"></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell2(this, 'score-input5', 0)">Gender-fair language and images not yet used in policy issuances</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell2(this, 'score-input5', 0.8333333333333333)">Gender-fair language and images used in some policy issuances</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell2(this, 'score-input5', 1.666666666666667)">Gender-fair language and images used in all policy issuances</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input5" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Attach sample policy of the organization directing the use of gender-fair language and polices as well as policies of the organization that used gender-fair language and images.
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                <tr> 
-                                                                                    <td class="text-center border"></td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                        <th class="text-center border" colspan="4">Sub-total GMEF Score <i>(Level 2 Policy)</i></th>
-                                                                        <th class="text-center border" colspan="1" id="subtotalCell2">0</th>
-                                                                        <th class="text-center border" colspan="1"></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center border" colspan="6"></td>
-                                                                        </tr>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="p-1" colspan="6">3. Integration of GAD in the Organization’s Policies <i>(max score: 5; for each item or question, 1.67)</i></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                        <tr>
-                                                                            <td class="border p-1">3.1 Has the d a GAD Agenda/Strategic Framework? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell3(this, 'score-input6', 0)">No GAD Agenda/ Strategic Framework formulated</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell3(this, 'score-input6', 0.8333333333333333)">GAD Agenda/Strategic Framework formulated but not adopted by management</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell3(this, 'score-input6', 1.666666666666667)">GAD Agenda/Strategic Framework formulated and adopted by management</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input6" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Attach a copy of the GAD Agenda/ Strategic Framework of the organization (or GAD Code, if LGU)
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                <tr> 
-                                                                                    <td class="text-center border"></td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1">3.2 Has the organization integrated GAD perspective in its organizational and/ or national/sectoral plan/s? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell3(this, 'score-input7', 0)">GAD perspective not yet integrated in organizational and/ or national/ sectoral plan/s</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell3(this, 'score-input7', 0.8333333333333333)">GAD perspective integrated in selected areas of the organizational and/ or national/sectoral plan/s</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell3(this, 'score-input7', 1.666666666666667)">GAD perspective integrated in all areas of the organizational and/or national/ sectoral plan/s</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input7" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Enumerate the organizational and/or national/ sectoral plan/s in which GAD has been integrated (e.g. Philippine Development Plan, Annual Budget Call or Gender-Responsive LGU Plans such as Comprehensive Development Plan for LGU) Organizational Plans (e.g., Work Plan, Capacity Development Plan, Procurement Plan; Sectoral Plan i.e. Youth Plan, Disaster Plan, Disability Plan etc.)
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Title</th>
-                                                                                    <th class="text-center border">Type</th>
-                                                                                    <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1">3.3 Has the organization formulated organizational/national/ sectoral policies on GAD? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell3(this, 'score-input8', 0)">No organizational/ national/sectoral policies on GAD issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell3(this, 'score-input8', 0.8333333333333333)">1-2 organizational/ national/ sectoral policies on GAD issued</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell3(this, 'score-input8', 1.666666666666667)">3 or more organizational/ national/sectoral policies on GAD issued</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input8" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Provide complete title of sector specific GAD policies issued (e.g. Agency provision in the MCW i.e. CSC-Special Leave for Women, DFA- establishment of Gender Focal Point Officer in Philippine Embassies and Consulates, GAD Code, RH Code and NAP WPS) and attach
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                        <td class="">copies if available.</td>
-                                                                                    </tr>
-                                                                                    <tr> 
-                                                                                        <th class="text-center border">Title</th>
-                                                                                        <th class="text-center border">Type</th>
-                                                                                        <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                        <th class="text-center border" colspan="4">Sub-total GMEF Score <i>(Level 3 Policy)</i></th>
-                                                                        <th class="text-center border" colspan="1" id="subtotalCell3">0</th>
-                                                                        <th class="text-center border" colspan="1"></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center border" colspan="6"></td>
-                                                                        </tr>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th colspan="6">4. Updating and Continuous Enhancement of GAD Policies <i>(max score: 5; for each item or question, 1.67)</i></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                        <tr>
-                                                                            <td class="border p-1">4.1 Has the organization’s GAD policy/policies resulted in bridging gender gaps of its clients (internal and external)? <i>(possible scores are 0, 0.83 and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell4(this, 'score-input9', 0)">No gender gaps addressed by GAD policy/policies</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell4(this, 'score-input9', 0.8333333333333333)">Gender gaps of either internal and/or external clients are addressed by 1-2 GAD policies</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell4(this, 'score-input9', 1.666666666666667)">Gender gaps of either internal and/or external clients are addressed by 3 or more GAD policies</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input9" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">List down existing GAD policies of the organization and how it bridged gender gaps of its internal and/or external clients (e.g. lowering and responding to the cases Violence against Women
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                        <th class="text-center border">Policy Title</th>
-                                                                                        <th class="text-center border">Purpose/ Subject Matter</th>
-                                                                                        <th class="text-center border">Date Issued</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                        <td class="text-center border">    </td>
-                                                                                </tr >
-                                                                                <tr > 
-                                                                                    <td class="p-1" colspan="6">Attach a copy of the policy assessment or Gender Impact Assessment conducted by the organization, if applicable.</td>
-                                                                                </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1">4.2 Has the organization used the results of gender analysis in the development and/ or enhancement of policies? <i>(possible scores are 0, 0.83, and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell4(this, 'score-input10', 0)">Results of gender analysis was not usedin the development and/or enhancement of policies</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell4(this, 'score-input10', 0.8333333333333333)">Results of gender analysis used in the development and/or enhancement of 1-2 policies</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell4(this, 'score-input10', 1.666666666666667)">Results of gender analysis used in the development and/or enhancement of 3 or more policies</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input10" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Enumerate enhanced policies, guidelines and/ or documents enhanced based on the results of gender analysis.
-                                                                                <table class="table table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">Policy/ Guidelines and/or Documents Enhanced</th>
-                                                                                    <th class="text-center border">Gender Analysis Tools Used</th>
-                                                                                    <th class="text-center border">Remarks</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr >
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="border p-1">4.3 Has the organization integrated GAD perspective in its Vision, Mission and Goals? <i>(possible scores are 0, 0.83, and 1.67)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell4(this, 'score-input11', 0)">GAD perspective not yet integrated in the Vision, Mission or Goals</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0.8333333333333333" onclick="highlightCell4(this, 'score-input11', 0.8333333333333333)">GAD perspective integrated in either the Vision, Mission or Goals</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="1.666666666666667" onclick="highlightCell4(this, 'score-input11', 1.666666666666667)">GAD perspective integrated in the Vision, Mission and Goals</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input11" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">Enumerate enhanced policies, guidelines and/ or documents enhanced based on the results of gender analysis.
-                                                                                <table class="table  table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                        <td class="text-center border"></td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                        <th class="text-center border" colspan="4">Sub-total GMEF Score <i>(Level 4 Policy)</i></th>
-                                                                        <th class="text-center border" colspan="1" id="subtotalCell4">0</th>
-                                                                        <th class="text-center border" colspan="1"></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center border" colspan="6"></td>
-                                                                        </tr>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th colspan="6">5. Model GAD Policies <i>(max score: 5; for each item or question, 5)</i></th>
-                                                                        </tr>
-                                                                     
-                                                                    </thead>
-                                                                        <tr>
-                                                                            <td class="border p-1">5.1 Has the organization’s GAD policies been used as model/standard by other organizations? <i>(possible scores are 0, 2.5 and 5)</i></td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="0" onclick="highlightCell5(this, 'score-input12', 0)">Other organizations have not used the organization’s policy/ policies as model or standard</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="2.50" onclick="highlightCell5(this, 'score-input12', 2.50)">1-2 organization/s have used the organization’s policy/ policies as model/ standard</td>
-                                                                            <td class="border p-1" style="cursor: pointer;" data-score="5.00" onclick="highlightCell5(this, 'score-input12', 5.00)">3 or more organizations have used the organization’s policy/ policies as model/ standard</td>
-                                                                            <td class="text-center border"><input type="number" id="score-input12" required style="border: none;" name="enable_one" class="text-center" placeholder="type score here."></td>
-                                                                            <td class="border p-1" colspan="2">List down existing GAD policies used as a model or replicated by other organizations (e.g., GAD Agenda or Strategic Framework for NGAs; Policy creating a Provincial GAD Office or GAD Code for LGUs)
-                                                                                <table class="table table-row-bordered gy-6">
-                                                                                    <tr> 
-                                                                                    <th class="text-center border">GAD Policy</th>
-                                                                                    <th class="text-center border">Organization/ Agency Adopting/ Replicating the Policy</th>
-                                                                                    <th class="text-center border">Remarks</th>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr>
-                                                                                <tr> 
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                    <td class="text-center border">    </td>
-                                                                                </tr >
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th class="text-center border" colspan="4">Sub-total GMEF Score <i>(Level 5 Policy)</i></th>
-                                                                            <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
-                                                                            <th class="text-center border" colspan="1"></th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <th class="text-center border" colspan="4"><h5><strong>TOTAL GMEF SCORE <i>(Policy)</i></strong></h5></th>
-                                                                            <th class="text-center border" colspan="1" ><h5 id="grandTotalCell1">0</h5></th>
-                                                                            <th class="text-center border" colspan="1"></th>
-                                                                        </tr> -->
-                                                                </table>
-                                                            <!-- </div> -->
-                                                        <!-- </div>  -->
-                                                        
-                                                       
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -4071,35 +3775,28 @@ function highlightCell1(score) {
     }
 }
 
-// function updateDescriptionAndScore(selectElement) {
-//     const score = selectElement.value;
-//     const descriptions = {
-//         "0": "No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued.",
-//         "0.8333333333333333": "Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued.",
-//         "1.666666666666667": "Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued."
-//     };
+    function updateDescriptionAndScore(selectElement, id) {
+        var selectedPoint = parseFloat(selectElement.value).toFixed(2);
+        var selectedDescription = selectElement.options[selectElement.selectedIndex].text;
 
-//     // Update the description container with the full description
-//     document.getElementById('description-container').innerText = descriptions[score];
+        // Find the description container related to this select element
+        var descriptionContainer = document.getElementById('description-container-' + id);
 
-//     // Update the score input field
-//     document.getElementById('score-input').value = score;
-// }
+        if (descriptionContainer) {
+            descriptionContainer.innerText = selectedDescription;
+        }
 
-// // Initial update (if needed)
-// document.addEventListener('DOMContentLoaded', () => {
-//     const selectElement = document.getElementById('score-select');
-//     if (selectElement) {
-//         updateDescriptionAndScore(selectElement);
-//     }
-// });
+        // Find the score points cell related to this select element
+        var scorePointsCell = document.getElementById('score-points-' + id);
 
-function updateDescriptionAndScore(selectElement) {
-    const selectedValue = selectElement.value;
+        if (scorePointsCell) {
+            scorePointsCell.innerText = selectedPoint;
+        }
 
-    console.log("Selected value:", selectedValue);
-          
-};
+        // Perform any additional operations with selectedPoint and selectedDescription
+        console.log("Selected Point: " + selectedPoint);
+        console.log("Selected Description: " + selectedDescription);
+    }
 </script>
 
 @endsection
