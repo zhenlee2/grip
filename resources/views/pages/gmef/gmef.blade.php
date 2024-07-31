@@ -161,11 +161,11 @@
                                                                                         </table>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td style="vertical-align: middle; text-align: center;">
-                                                                                    <a class="btn btn-outline-secondary btn-sm" href="#" data-bs-original-title="View" title="View">
+                                                                                <!-- <td style="vertical-align: middle; text-align: center;" class="border">
+                                                                                    <a class="btn btn-outline-secondary btn-sm p-1" href="#" data-bs-original-title="View" title="View">
                                                                                         <span class="icon-eye"></span>
                                                                                     </a>
-                                                                                </td>
+                                                                                </td> -->
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
