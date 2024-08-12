@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Services\Gmef;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\gmefquestionnaire;
 use App\Models\gmeftool;
 use App\Models\gmefscore;
+use App\Models\gmefmov;
+use App\Models\movtitle;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -18,39 +21,70 @@ class ShowGmef
         $section = auth()->user()->section_id;
 
         $data = gmeftool::select(
-            'tbl_gmef_tool.title', 
+            'tbl_gmef_tool.title as tool_title', 
             'tbl_gmef_indicator.title_indi', 
             'tbl_gmef_indicator.title_parenthesis', 
             'tbl_gmef_indicator.tool_id', 
-            'tbl_gmef_indicator.id as indicator_id') // Alias to avoid conflicts and for clarity
+            'tbl_gmef_indicator.id as indicator_id'
+        )
         ->leftJoin('tbl_gmef_indicator', 'tbl_gmef_indicator.tool_id', '=', 'tbl_gmef_tool.id')
         ->get();
+    
+        $indicatorIds = $data->pluck('indicator_id')->toArray();
+    
+    // Step 2: Retrieve data from gmefquestionnaire
+    $questionnaires = gmefquestionnaire::select('id as questionnaire_id', 'descriptors', 'desc_parenthesis', 'indicator_id')
+        ->whereIn('indicator_id', $indicatorIds)
+        ->orderBy('descriptors', 'asc')
+        ->get();
+    
+        $questionnaireIds = $questionnaires->pluck('questionnaire_id')->toArray();
+    
+    // Step 3: Retrieve data from gmefscore
+    $scores = gmefscore::select('score_desc', 'point', 'questionnaire_id')
+        ->whereIn('questionnaire_id', $questionnaireIds)
+        ->get();
+    
+        $scoresByQuestionnaire = $scores->groupBy('questionnaire_id');
+    
+    // Step 4: Retrieve data from gmefmov
+    $instruction = gmefmov::select('id as mov_id', 'instruction', 'instruc_parenthesis', 'questionnaire_id')
+        ->whereIn('questionnaire_id', $questionnaireIds)
+        ->get();
 
-        $data1 = $data->pluck('indicator_id')->toArray(); // Use the alias defined in the query
+        $movesByInstruction = $instruction->groupBy('questionnaire_id');
 
-        $data2 = gmefquestionnaire::select('id', 'tbl_gmef_questionnaire.descriptors', 'tbl_gmef_questionnaire.desc_parenthesis', 'tbl_gmef_questionnaire.indicator_id')
-                ->whereIn('tbl_gmef_questionnaire.indicator_id', $data1)
-                ->orderBy('tbl_gmef_questionnaire.descriptors', 'asc')
-                ->get();
-
-                // Step 2: Pluck the ids from the retrieved data
-        $data3 = $data2->pluck('id')->toArray();
-
-                // Step 3: Retrieve data from gmefscore based on the plucked ids
-        $data4 = gmefscore::select('tbl_gmef_score.score_desc', 'tbl_gmef_score.point', 'tbl_gmef_score.questionnaire_id')
-                ->whereIn('tbl_gmef_score.questionnaire_id', $data3)
-                ->get();
-
-        $scoresByQuestionnaire = $data4->groupBy('questionnaire_id');
-
-        $mergedData = $data2->map(function($questionnaire) use ($scoresByQuestionnaire) {
-            $questionnaire->scores = $scoresByQuestionnaire->get($questionnaire->id, collect());
-            return $questionnaire;
-        });
+        $moveIds = $instruction->pluck('mov_id')->toArray();
+    
+    // Step 5: Retrieve data from movtitle
+    $movTitles = movtitle::select('id as movtitle_id', 'table_title', 'gmefmov_id')
+        ->whereIn('gmefmov_id', $moveIds)
+        ->get();
+        
+        $movesByQuestionnaire = $movTitles->groupBy('gmefmov_id');
+    
+    // Step 6: Merge moves and their titles
+    // $moves = $moves->map(function($move) use ($movTitlesByMov) {
+    //     $move->titles = $movTitlesByMov->get($move->mov_id, collect());
+    //     return $move;
+    // });
+   
+    $mergedData = $questionnaires->map(function($questionnaire) use ($scoresByQuestionnaire, $movesByInstruction, $movesByQuestionnaire) {
+        $scores = $scoresByQuestionnaire->get($questionnaire->questionnaire_id, collect());
+        $instruction = $movesByInstruction->get($questionnaire->questionnaire_id, collect());
+        $moves = $movesByQuestionnaire->get($questionnaire->questionnaire_id, collect());
+        $questionnaire->scores = $scores;
+        $questionnaire->instruction = $instruction;
+        $questionnaire->moves = $moves;
+    
+        return $questionnaire;
+    });
+    
 
         return [
             'indicator' => $data,
             'questionnaire' => $mergedData,
+            // 'movtitle'=> $mergedmovtitle,
         ];
     }
    

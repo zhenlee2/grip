@@ -49,21 +49,6 @@
 
 @section('breadcrumb-title')
 <h3>Gender Mainstreaming Evaluation Framework Tool</h3>
-   <!-- <div class="card-toolbar">
-      <div class="input-group flex-nowrap">
-            <span class="input-group-text"><i class="bi bi-calendar fs-4"></i></span>
-               <div class="overflow-hidden flex-grow-1">
-                     <select class="form-select rounded-0" data-control="select2" data-placeholder="Filter Year" id="filter_year">
-                        <option></option>
-                        <option value="2021">Year 2021</option>
-                        <option value="2022">Year 2022</option>
-                        <option value="2023">Year 2023</option>
-                     </select>
-               </div>
-            <span class="input-group-text bg-dark text-white" id="btn-filter-year" style="cursor: pointer;">Filter Year</span>
-            <button class="btn btn-sm btn-primary mx-4" id="save_changes_policy">Save Changes</button>
-      </div>
-   </div> -->
 @endsection
 
 @section('breadcrumb-items')
@@ -137,35 +122,42 @@
                                                                                     {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
                                                                                 </td>
                                                                                 <td class="border p-1">
-                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                    <select id="score-select-{{ $g->questionnaire_id }}" class="border p-1" onchange="updateDescriptionAndScore(this.value, this.options[this.selectedIndex].text, {{$g->questionnaire_id}})">
                                                                                         <option value="" disabled selected>Select score</option>
-                                                                                        @foreach($g->scores as $score)
+                                                                                            @foreach($g->scores as $score)
                                                                                                 <option value="{{ $score->point }}">
                                                                                                 {{ $score->score_desc }}
                                                                                                 </option>
-                                                                                        @endforeach
+                                                                                            @endforeach
                                                                                     </select>
                                                                                     <!-- Container for displaying full descriptions -->
-                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                    <div id="description-container-{{ $g->questionnaire_id }}" class="mt-2"></div>
                                                                                 </td>
-                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->questionnaire_id }}"></td>
                                                                                 <td class="border p-1">
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                <th class="border">1</th>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                <td class="border">1</td>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
                                                                                 </td>
-                                                                                <!-- <td style="vertical-align: middle; text-align: center;" class="border">
-                                                                                    <a class="btn btn-outline-secondary btn-sm p-1" href="#" data-bs-original-title="View" title="View">
-                                                                                        <span class="icon-eye"></span>
-                                                                                    </a>
-                                                                                </td> -->
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
@@ -174,6 +166,9 @@
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 Policy)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="heading2">
@@ -205,18 +200,29 @@
                                                                                 </td>
                                                                                 <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
                                                                                 <td class="border p-1">
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                <th class="border">1</th>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                <td class="border">1</td>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td></td>
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
@@ -225,6 +231,9 @@
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 2 Policy)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="heading3">
@@ -256,18 +265,29 @@
                                                                                     </td>
                                                                                     <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
                                                                                     <td class="border p-1">
-                                                                                        <div class="dt-ext table-responsive">
-                                                                                            <table class="table border table-sm">
-                                                                                                <thead>
-                                                                                                    <th class="border">1</th>
-                                                                                                </thead>
-                                                                                                <tbody>
-                                                                                                    <td class="border">1</td>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td></td>
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
                                                                                 </tr>
                                                                             @endif
                                                                         @endforeach
@@ -276,6 +296,9 @@
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 3 Policy)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="heading4">
@@ -307,18 +330,29 @@
                                                                                 </td>
                                                                                 <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
                                                                                 <td class="border p-1">
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                <th class="border">1</th>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                <td class="border">1</td>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td></td>
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
@@ -327,6 +361,9 @@
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 4 Policy)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="true" aria-controls="heading5">
@@ -338,7 +375,7 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $g)
+                                                                @foreach($questionnaire as $g)
                                                                         @if($g->indicator_id == 5)
                                                                             <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
                                                                                 <td class="border p-1">
@@ -358,18 +395,29 @@
                                                                                 </td>
                                                                                 <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
                                                                                 <td class="border p-1">
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                <th class="border">1</th>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                <td class="border">1</td>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td></td>
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
                                                                             </tr>
                                                                         @endif
                                                                     @endforeach
@@ -378,6 +426,9 @@
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 5 Policy)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -2768,1036 +2819,19 @@
 
 @section('script')
 <script>
-var scores1 = {
-    'score-input': 0,
-    'score-input1': 0,
-    'score-input2': 0,
-};
-
-var scores2 = {
-    'score-input3': 0,
-    'score-input4': 0,
-    'score-input5': 0
-};
-
-var scores3 = {
-    'score-input6': 0,
-    'score-input7': 0,
-    'score-input8': 0
-};
-
-var scores4 = {
-    'score-input9': 0,
-    'score-input10': 0,
-    'score-input11': 0,
-    'score-input12': 0
-};
-
-var scores5 = {
-    'score-input12': 0
-};
-
-function highlightCell1(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = '#f2eff7';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scores1[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScore1();
+  function updateDescriptionAndScore(point, scoreDesc, id) {
+    console.log("Point:", point);
+    console.log("Score Description:", scoreDesc);
+    console.log("ID:", id);
+    // Your logic here
+    const descriptionContainer = document.getElementById(`description-container-${id}`);
+    console.log("ID:",descriptionContainer );
+// Update the content of the description container
+if (descriptionContainer) {
+    descriptionContainer.textContent = `Selected Score: ${point}, Description: ${scoreDesc}`;
 }
-
-function updateTotalScore1() {
-    var total = 0;
-    for (var key in scores1) {
-        if (scores1.hasOwnProperty(key)) {
-            total += scores1[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCell1').innerText = total.toFixed(2);
-    document.getElementById('subtotalCell11').innerText = total.toFixed(2);
-    updateGrandTotal();
 }
-
-function highlightCell2(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = '#f2eff7';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores2 object
-    scores2[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScore2();
-}
-
-function updateTotalScore2() {
-    var total = 0;
-    for (var key in scores2) {
-        if (scores2.hasOwnProperty(key)) {
-            total += scores2[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCell2').innerText = total.toFixed(2);
-    document.getElementById('subtotalCell22').innerText = total.toFixed(2);
-    updateGrandTotal();
-}
-
-function highlightCell3(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = '#f2eff7';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores2 object
-    scores3[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScore3();
-}
-
-function updateTotalScore3() {
-    var total = 0;
-    for (var key in scores3) {
-        if (scores3.hasOwnProperty(key)) {
-            total += scores3[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCell3').innerText = total.toFixed(2);
-    document.getElementById('subtotalCell33').innerText = total.toFixed(2);
-    updateGrandTotal();
-}
-
-function highlightCell4(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = '#f2eff7';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores2 object
-    scores4[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScore4();
-}
-
-function updateTotalScore4() {
-    var total = 0;
-    for (var key in scores4) {
-        if (scores4.hasOwnProperty(key)) {
-            total += scores4[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCell4').innerText = total.toFixed(2);
-    document.getElementById('subtotalCell44').innerText = total.toFixed(2);
-    updateGrandTotal();
-}
-
-function highlightCell5(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = '#f2eff7';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores2 object
-    scores5[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScore5();
-}
-
-function updateTotalScore5() {
-    var total = 0;
-    for (var key in scores5) {
-        if (scores5.hasOwnProperty(key)) {
-            total += scores5[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCell5').innerText = total.toFixed(2);
-    document.getElementById('subtotalCell55').innerText = total.toFixed(2);
-    updateGrandTotal();
-}
-
-function updateGrandTotal() {
-    var grandTotal = 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCell1').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCell2').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCell3').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCell4').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCell5').innerText) || 0;
-    
-    document.getElementById('grandTotalCell').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCell1').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCell2').innerText = grandTotal.toFixed(2);
-
-    calculateTotalGrandScore();
-}
-
-var scoresp1 = {
-    'score-inputp1': 0,
-    'score-inputp2': 0,
-    'score-inputp3': 0,
-    'score-inputp4': 0,
-    'score-inputp5': 0,
-    'score-inputp6': 0
-};
-
-var scoresp2 = {
-    'score-inputp21': 0,
-    'score-inputp22': 0,
-    'score-inputp23': 0,
-    'score-inputp24': 0,
-    'score-inputp25': 0,
-    'score-inputp26': 0
-};
-
-var scoresp3 = {
-    'score-inputp31': 0,
-    'score-inputp32': 0,
-    'score-inputp33': 0,
-    'score-inputp34': 0,
-    'score-inputp35': 0,
-    'score-inputp36': 0
-};
-
-var scoresp4 = {
-    'score-inputp41': 0,
-    'score-inputp42': 0,
-    'score-inputp43': 0,
-    'score-inputp44': 0,
-    'score-inputp45': 0,
-    'score-inputp46': 0
-};
-
-var scoresp5 = {
-    'score-inputp51': 0,
-    'score-inputp52': 0,
-    'score-inputp53': 0
-};
-
-function highlightCellp1(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresp1[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorep1();
-}
-
-function updateTotalScorep1() {
-    var total = 0;
-    for (var key in scoresp1) {
-        if (scoresp1.hasOwnProperty(key)) {
-            total += scoresp1[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellp1').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellp11').innerText = total.toFixed(2);
-    updatepGrandTotal();
-}
-
-function highlightCellp2(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresp2[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorep2();
-}
-
-function updateTotalScorep2() {
-    var total = 0;
-    for (var key in scoresp2) {
-        if (scoresp2.hasOwnProperty(key)) {
-            total += scoresp2[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellp2').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellp22').innerText = total.toFixed(2);
-    updatepGrandTotal();
-}
-
-function highlightCellp3(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresp3[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorep3();
-}
-
-function updateTotalScorep3() {
-    var total = 0;
-    for (var key in scoresp3) {
-        if (scoresp3.hasOwnProperty(key)) {
-            total += scoresp3[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellp3').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellp33').innerText = total.toFixed(2);
-    updatepGrandTotal();
-}
-
-function highlightCellp4(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresp4[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorep4();
-}
-
-function updateTotalScorep4() {
-    var total = 0;
-    for (var key in scoresp4) {
-        if (scoresp4.hasOwnProperty(key)) {
-            total += scoresp4[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellp4').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellp44').innerText = total.toFixed(2);
-    updatepGrandTotal();
-}
-
-function highlightCellp5(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresp5[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorep5();
-}
-
-function updateTotalScorep5() {
-    var total = 0;
-    for (var key in scoresp5) {
-        if (scoresp5.hasOwnProperty(key)) {
-            total += scoresp5[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellp5').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellp55').innerText = total.toFixed(2);
-    updatepGrandTotal();
-}
-
-function updatepGrandTotal() {
-    var grandTotal = 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellp1').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellp2').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellp3').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellp4').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellp5').innerText) || 0;
-    
-    document.getElementById('grandTotalCellp').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellp1').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellp2').innerText = grandTotal.toFixed(2);
-
-    calculateTotalGrandScore();
-}
-
-var scoresem1 = {
-    'score-inputem11': 0,
-    'score-inputem22': 0,
-    'score-inputem33': 0
-};
-
-var scoresem2 = {
-    'score-inputem21': 0,
-    'score-inputem22': 0,
-    'score-inputem23': 0,
-    'score-inputem24': 0,
-    'score-inputem25': 0
-};
-
-var scoresem3 = {
-    'score-inputem31': 0,
-    'score-inputem32': 0,
-    'score-inputem33': 0,
-    'score-inputem34': 0,
-    'score-inputem35': 0
-};
-
-var scoresem4 = {
-    'score-inputem41': 0,
-    'score-inputem42': 0,
-    'score-inputem43': 0,
-    'score-inputem44': 0,
-    'score-inputem45': 0
-};
-
-var scoresem5 = {
-    'score-inputem51': 0,
-    'score-inputem52': 0,
-    'score-inputem53': 0,
-    'score-inputem54': 0,
-    'score-inputem55': 0
-};
-
-function highlightCellem1(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresem1[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScoreem1();
-}
-
-function updateTotalScoreem1() {
-    var total = 0;
-    for (var key in scoresem1) {
-        if (scoresem1.hasOwnProperty(key)) {
-            total += scoresem1[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellem1').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellem11').innerText = total.toFixed(2);
-    updateemGrandTotal();
-}
-
-function highlightCellem2(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresem2[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScoreem2();
-}
-
-function updateTotalScoreem2() {
-    var total = 0;
-    for (var key in scoresem2) {
-        if (scoresem2.hasOwnProperty(key)) {
-            total += scoresem2[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellem2').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellem22').innerText = total.toFixed(2);
-    updateemGrandTotal();
-}
-
-function highlightCellem3(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresem3[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScoreem3();
-}
-
-function updateTotalScoreem3() {
-    var total = 0;
-    for (var key in scoresem3) {
-        if (scoresem3.hasOwnProperty(key)) {
-            total += scoresem3[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellem3').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellem33').innerText = total.toFixed(2);
-    updateemGrandTotal();
-}
-
-function highlightCellem4(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresem4[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScoreem4();
-}
-
-function updateTotalScoreem4() {
-    var total = 0;
-    for (var key in scoresem4) {
-        if (scoresem4.hasOwnProperty(key)) {
-            total += scoresem4[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellem4').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellem44').innerText = total.toFixed(2);
-    updateemGrandTotal();
-}
-
-function highlightCellem5(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scoresem5[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScoreem5();
-}
-
-function updateTotalScoreem5() {
-    var total = 0;
-    for (var key in scoresem5) {
-        if (scoresem5.hasOwnProperty(key)) {
-            total += scoresem5[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellem5').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellem55').innerText = total.toFixed(2);
-    updateemGrandTotal();
-}
-
-function updateemGrandTotal() {
-    var grandTotal = 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellem1').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellem2').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellem3').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellem4').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellem5').innerText) || 0;
-    
-    document.getElementById('grandTotalCellem').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellem1').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellem2').innerText = grandTotal.toFixed(2);
-
-    calculateTotalGrandScore();
-}
-
-var scorespap1 = {
-    'score-inputem11': 0,
-    'score-inputem22': 0,
-    'score-inputem33': 0
-};
-
-var scorespap2 = {
-    'score-inputem21': 0,
-    'score-inputem22': 0,
-    'score-inputem23': 0,
-    'score-inputem24': 0,
-    'score-inputem25': 0
-};
-
-var scorespap3 = {
-    'score-inputem31': 0,
-    'score-inputem32': 0,
-    'score-inputem33': 0,
-    'score-inputem34': 0,
-    'score-inputem35': 0
-};
-
-var scorespap4 = {
-    'score-inputem41': 0,
-    'score-inputem42': 0,
-    'score-inputem43': 0,
-    'score-inputem44': 0,
-    'score-inputem45': 0
-};
-
-var scorespap5 = {
-    'score-inputem51': 0,
-    'score-inputem52': 0,
-    'score-inputem53': 0,
-    'score-inputem54': 0,
-    'score-inputem55': 0
-};
-
-function highlightCellpap1(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scorespap1[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorepap1();
-}
-
-function updateTotalScorepap1() {
-    var total = 0;
-    for (var key in scorespap1) {
-        if (scorespap1.hasOwnProperty(key)) {
-            total += scorespap1[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellpap1').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellpap11').innerText = total.toFixed(2);
-    updatepapGrandTotal();
-}
-
-function highlightCellpap2(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scorespap2[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorepap2();
-}
-
-function updateTotalScorepap2() {
-    var total = 0;
-    for (var key in scorespap2) {
-        if (scorespap2.hasOwnProperty(key)) {
-            total += scorespap2[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellpap2').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellpap22').innerText = total.toFixed(2);
-    updatepapGrandTotal();
-}
-
-function highlightCellpap3(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scorespap3[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorepap3();
-}
-
-function updateTotalScorepap3() {
-    var total = 0;
-    for (var key in scorespap3) {
-        if (scorespap3.hasOwnProperty(key)) {
-            total += scorespap3[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellpap3').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellpap33').innerText = total.toFixed(2);
-    updatepapGrandTotal();
-}
-
-function highlightCellpap4(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scorespap4[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorepap4();
-}
-
-function updateTotalScorepap4() {
-    var total = 0;
-    for (var key in scorespap4) {
-        if (scorespap4.hasOwnProperty(key)) {
-            total += scorespap4[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellpap4').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellpap44').innerText = total.toFixed(2);
-    updatepapGrandTotal();
-}
-
-function highlightCellpap5(cell, inputId) {
-    // Remove highlight from all cells in the same row
-    var row = cell.parentNode;
-    var cells = row.querySelectorAll('td[data-score]');
-    cells.forEach(function(td) {
-        td.style.backgroundColor = '';
-    });
-
-    // Highlight the clicked cell
-    cell.style.backgroundColor = 'yellow';
-
-    // Get the score from the clicked cell's data-score attribute
-    var score = parseFloat(cell.dataset.score);
-
-    // Set the score in the corresponding input field
-    document.getElementById(inputId).value = score.toFixed(2);
-
-    // Update the score in the scores1 object
-    scorespap5[inputId] = score;
-
-    // Calculate the total score
-    updateTotalScorepap5();
-}
-
-function updateTotalScorepap5() {
-    var total = 0;
-    for (var key in scorespap5) {
-        if (scorespap5.hasOwnProperty(key)) {
-            total += scorespap5[key];
-        }
-    }
-    // Update the subtotal cell with the total score
-    document.getElementById('subtotalCellpap5').innerText = total.toFixed(2);
-    document.getElementById('subtotalCellpap55').innerText = total.toFixed(2);
-    updatepapGrandTotal();
-}
-
-function updatepapGrandTotal() {
-    var grandTotal = 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellpap1').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellpap2').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellpap3').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellpap4').innerText) || 0;
-    grandTotal += parseFloat(document.getElementById('subtotalCellpap5').innerText) || 0;
-    
-    document.getElementById('grandTotalCellpap').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellpap1').innerText = grandTotal.toFixed(2);
-    document.getElementById('grandTotalCellpap2').innerText = grandTotal.toFixed(2);
-
-    calculateTotalGrandScore();
-}
-calculateTotalGrandScore();
-function calculateTotalGrandScore() {
-    // Get the values of the grand total cells
-    const grandTotal1 = parseFloat(document.getElementById('grandTotalCell2').innerText) || 0;
-    const grandTotal2 = parseFloat(document.getElementById('grandTotalCellp2').innerText) || 0;
-    const grandTotal3 = parseFloat(document.getElementById('grandTotalCellem2').innerText) || 0;
-    const grandTotal4 = parseFloat(document.getElementById('grandTotalCellpap2').innerText) || 0;
-
-    // Calculate the total sum
-    const totalGrandScore = grandTotal1 + grandTotal2 + grandTotal3 + grandTotal4;
-
-    // Display the total sum
-    document.getElementById('totalGrandScore').innerText = totalGrandScore.toFixed(2);
-    // document.getElementById('totalGrandScore').innerHTML = `<strong>Total Grand Score: ${totalGrandScore.toFixed(2)}</strong>`;
-}
-
-// Call the function to calculate and display the total grand score
-
-function updateDescription(score) {
-    const descriptions = {
-        "0": "No policy/policies articulating support to GAD mandates and establishing essential elements of GAD planning and budgeting issued.",
-        "0.8333333333333333": "Policy/policies articulating support to GAD mandates and establishing at least one (1) essential element of GAD planning and budgeting issued.",
-        "1.666666666666667": "Policy/policies articulating support to GAD mandates and establishing all four essential elements of GAD planning and budgeting issued."
-    };
-
-    // Update the description container with the full description
-    document.getElementById('description-container').innerText = descriptions[score];
-
-    // Highlight logic (if needed)
-    highlightCell1(score);
-}
-
-// Initial update (if needed)
-document.addEventListener('DOMContentLoaded', () => {
-    const selectElement = document.getElementById('score-select');
-    if (selectElement) {
-        updateDescription(selectElement.value);
-    }
-});
-
-function highlightCell1(score) {
-    // You can define the logic for highlighting if necessary
-    // For example, applying a class or style to the selected option
-    const selectElement = document.getElementById('score-select');
-    const options = selectElement.options;
-
-    // Remove highlight from all options
-    for (let i = 0; i < options.length; i++) {
-        options[i].classList.remove('highlight');
-    }
-
-    // Highlight the selected option
-    selectElement.querySelector(`option[value="${score}"]`).classList.add('highlight');
-
-    // Handle other logic here (e.g., updating hidden input field)
-    const inputField = document.querySelector('.score-input');
-    if (inputField) {
-        inputField.value = score;
-    }
-}
-
-    function updateDescriptionAndScore(selectElement, id) {
-        var selectedPoint = parseFloat(selectElement.value).toFixed(2);
-        var selectedDescription = selectElement.options[selectElement.selectedIndex].text;
-
-        // Find the description container related to this select element
-        var descriptionContainer = document.getElementById('description-container-' + id);
-
-        if (descriptionContainer) {
-            descriptionContainer.innerText = selectedDescription;
-        }
-
-        // Find the score points cell related to this select element
-        var scorePointsCell = document.getElementById('score-points-' + id);
-
-        if (scorePointsCell) {
-            scorePointsCell.innerText = selectedPoint;
-        }
-
-        // Perform any additional operations with selectedPoint and selectedDescription
-        console.log("Selected Point: " + selectedPoint);
-        console.log("Selected Description: " + selectedDescription);
-    }
-</script>
+    </script>
 
 @endsection
 
