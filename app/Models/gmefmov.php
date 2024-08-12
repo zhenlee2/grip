@@ -13,12 +13,6 @@ class gmefmov extends Model
 
     protected $fillable = [
         'questionnaire_id',
-        'instruction_one',
-        'instruction_two',
-        'instruction_three',
-        'title_one',
-        'title_two',
-        'title_three',
-        'date_issued',
+        'instruction',
     ];
 }

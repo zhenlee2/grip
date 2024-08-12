@@ -12,11 +12,9 @@ class gmefactualmov extends Model
 
     protected $fillable = [
         'questionnaire_id',
+        'movtitle_id',
         'year',
-        'actual_mov_one',
-        'actual_mov_two',
-        'actual_mov_three',
-        'date_issued',
+        'actual_mov',
         'user_id',
         'division_id',
         'section_id',

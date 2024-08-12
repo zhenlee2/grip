@@ -16,14 +16,7 @@ class TblGmefMov extends Migration
         Schema::create('tbl_gmef_mov', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('questionnaire_id');
-            $table->text('instruction_one');
-            $table->text('instruction_two');
-            $table->text('instruction_three');
-            $table->text('title_one');
-            $table->text('title_two');
-            $table->text('title_three');
-            $table->text('title_four');
-            $table->text('movs_desc');
+            $table->text('instruction');
             $table->timestamps();
             $table->softDeletes();
         });
