@@ -1,10 +1,10 @@
-@extends('layouts.simple.master')
-@section('title', 'GMEF Tool')
 
-@section('css')
-@endsection
+<?php $__env->startSection('title', 'GMEF Tool'); ?>
 
-@section('style')
+<?php $__env->startSection('css'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('style'); ?>
     <style>
       .page-wrapper .page-body-wrapper .page-title {
             padding-top: 25px;
@@ -45,19 +45,19 @@
             width: 100%;
         }
     </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Gender Mainstreaming Evaluation Framework Tool</h3>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Pages</li>
 <li class="breadcrumb-item active">GMEF</li>
                   
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
    <div class="row">
       <div class="col-sm-12">
@@ -107,50 +107,51 @@
                                                             <tbody>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th  colspan="6" class="border p-1 " data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="heading1">
-                                                                        @foreach($indicator as $key => $g)
-                                                                            @if($g->indicator_id == 1)  
-                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
-                                                                            @endif
-                                                                        @endforeach
+                                                                        <?php $__currentLoopData = $indicator; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 1): ?>  
+                                                                                <?php echo e($g->title_indi); ?> <i><?php echo e($g->title_parenthesis); ?></i>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $g)
-                                                                        @if($g->indicator_id == 1)
-                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                    <?php $__currentLoopData = $questionnaire; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php if($g->indicator_id == 1): ?>
+                                                                            <tr class="collapse" id="collapse<?php echo e($g->indicator_id); ?>" aria-labelledby="heading<?php echo e($g->indicator_id); ?>" data-bs-parent="#accordionclose">
                                                                                 <td class="border p-1">
-                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    <?php echo e($g->descriptors); ?> <i><?php echo e($g->desc_parenthesis); ?></i>
                                                                                 </td>
                                                                                 <td class="border p-1">
-                                                                                    <select id="score-select-{{ $g->questionnaire_id }}" class="border p-1" onchange="updateDescriptionAndScore(this.value, this.options[this.selectedIndex].text, {{$g->questionnaire_id}})">
+                                                                                    <select id="score-select-<?php echo e($g->questionnaire_id); ?>" class="border p-1" onchange="updateDescriptionAndScore(this.value, this.options[this.selectedIndex].text, <?php echo e($g->questionnaire_id); ?>)">
                                                                                         <option value="" disabled selected>Select score</option>
-                                                                                            @foreach($g->scores as $score)
-                                                                                                <option value="{{ $score->point }}">
-                                                                                                {{ $score->score_desc }}
+                                                                                            <?php $__currentLoopData = $g->scores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $score): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                <option value="<?php echo e($score->point); ?>">
+                                                                                                <?php echo e($score->score_desc); ?>
+
                                                                                                 </option>
-                                                                                            @endforeach
+                                                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </select>
                                                                                     <!-- Container for displaying full descriptions -->
-                                                                                    <div id="description-container-{{ $g->questionnaire_id }}" class="mt-2"></div>
+                                                                                    <div id="description-container-<?php echo e($g->questionnaire_id); ?>" class="mt-2"></div>
                                                                                 </td>
-                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->questionnaire_id }}"></td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-<?php echo e($g->questionnaire_id); ?>"></td>
                                                                                 <td class="border p-1">
                                                                                     <div>
-                                                                                        @foreach ($g->instruction as $instruction)
-                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
-                                                                                        @endforeach
+                                                                                        <?php $__currentLoopData = $g->instruction; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $instruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                            <span><?php echo e($instruction->instruction); ?> <i><?php echo e($instruction->instruc_parenthesis); ?></i></span>
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
-                                                                                                @endforeach
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <th class="border"><?php echo e($moves->table_title); ?></th>
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($g->moves as $moves)
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                                     <td class="border"></td>
-                                                                                                @endforeach
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -159,8 +160,8 @@
                                                                                   <div class="btn btn-outline-primary">Add</div>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 Policy)</i></th>
@@ -172,50 +173,51 @@
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="heading2">
-                                                                        @foreach($indicator as $key => $g)
-                                                                            @if($g->indicator_id == 2)  
-                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
-                                                                            @endif
-                                                                        @endforeach
+                                                                        <?php $__currentLoopData = $indicator; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 2): ?>  
+                                                                                <?php echo e($g->title_indi); ?> <i><?php echo e($g->title_parenthesis); ?></i>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $g)
-                                                                        @if($g->indicator_id == 2)
-                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                    <?php $__currentLoopData = $questionnaire; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php if($g->indicator_id == 2): ?>
+                                                                            <tr class="collapse" id="collapse<?php echo e($g->indicator_id); ?>" aria-labelledby="heading<?php echo e($g->indicator_id); ?>" data-bs-parent="#accordionclose">
                                                                                 <td class="border p-1">
-                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    <?php echo e($g->descriptors); ?> <i><?php echo e($g->desc_parenthesis); ?></i>
                                                                                 </td>
                                                                                 <td class="border p-1">
-                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                    <select id="score-select-<?php echo e($g->id); ?>" class="border p-1" onchange="updateDescriptionAndScore(this, <?php echo e($g->id); ?>)">
                                                                                         <option value="" disabled selected>Select score</option>
-                                                                                        @foreach($g->scores as $score)
-                                                                                                <option value="{{ $score->point }}">
-                                                                                                {{ $score->score_desc }}
+                                                                                        <?php $__currentLoopData = $g->scores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $score): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                <option value="<?php echo e($score->point); ?>">
+                                                                                                <?php echo e($score->score_desc); ?>
+
                                                                                                 </option>
-                                                                                        @endforeach
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </select>
                                                                                     <!-- Container for displaying full descriptions -->
-                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                    <div id="description-container-<?php echo e($g->id); ?>" class="mt-2"></div>
                                                                                 </td>
-                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-<?php echo e($g->id); ?>"></td>
                                                                                 <td class="border p-1">
                                                                                     <div>
-                                                                                        @foreach ($g->instruction as $instruction)
-                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
-                                                                                        @endforeach
+                                                                                        <?php $__currentLoopData = $g->instruction; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $instruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                            <span><?php echo e($instruction->instruction); ?> <i><?php echo e($instruction->instruc_parenthesis); ?></i></span>
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
-                                                                                                @endforeach
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <th class="border"><?php echo e($moves->table_title); ?></th>
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($g->moves as $moves)
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                                     <td class="border"></td>
-                                                                                                @endforeach
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -224,8 +226,8 @@
                                                                                   <div class="btn btn-outline-primary">Add</div>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 2 Policy)</i></th>
@@ -237,50 +239,51 @@
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="heading3">
-                                                                        @foreach($indicator as $key => $g)
-                                                                            @if($g->indicator_id == 3)  
-                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
-                                                                            @endif
-                                                                        @endforeach
+                                                                        <?php $__currentLoopData = $indicator; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 3): ?>  
+                                                                                <?php echo e($g->title_indi); ?> <i><?php echo e($g->title_parenthesis); ?></i>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                    @foreach($questionnaire as $g)
-                                                                            @if($g->indicator_id == 3)
-                                                                                <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                    <?php $__currentLoopData = $questionnaire; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 3): ?>
+                                                                                <tr class="collapse" id="collapse<?php echo e($g->indicator_id); ?>" aria-labelledby="heading<?php echo e($g->indicator_id); ?>" data-bs-parent="#accordionclose">
                                                                                     <td class="border p-1">
-                                                                                        {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                        <?php echo e($g->descriptors); ?> <i><?php echo e($g->desc_parenthesis); ?></i>
                                                                                     </td>
                                                                                     <td class="border p-1">
-                                                                                        <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                        <select id="score-select-<?php echo e($g->id); ?>" class="border p-1" onchange="updateDescriptionAndScore(this, <?php echo e($g->id); ?>)">
                                                                                             <option value="" disabled selected>Select score</option>
-                                                                                            @foreach($g->scores as $score)
-                                                                                                    <option value="{{ $score->point }}">
-                                                                                                    {{ $score->score_desc }}
+                                                                                            <?php $__currentLoopData = $g->scores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $score): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <option value="<?php echo e($score->point); ?>">
+                                                                                                    <?php echo e($score->score_desc); ?>
+
                                                                                                     </option>
-                                                                                            @endforeach
+                                                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                         </select>
                                                                                         <!-- Container for displaying full descriptions -->
-                                                                                        <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                        <div id="description-container-<?php echo e($g->id); ?>" class="mt-2"></div>
                                                                                     </td>
-                                                                                    <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                    <td class="border p-1" style="text-align: center;" id="score-points-<?php echo e($g->id); ?>"></td>
                                                                                     <td class="border p-1">
                                                                                     <div>
-                                                                                        @foreach ($g->instruction as $instruction)
-                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
-                                                                                        @endforeach
+                                                                                        <?php $__currentLoopData = $g->instruction; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $instruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                            <span><?php echo e($instruction->instruction); ?> <i><?php echo e($instruction->instruc_parenthesis); ?></i></span>
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
-                                                                                                @endforeach
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <th class="border"><?php echo e($moves->table_title); ?></th>
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($g->moves as $moves)
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                                     <td class="border"></td>
-                                                                                                @endforeach
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -289,8 +292,8 @@
                                                                                   <div class="btn btn-outline-primary">Add</div>
                                                                                 </td>
                                                                                 </tr>
-                                                                            @endif
-                                                                        @endforeach
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 3 Policy)</i></th>
@@ -302,50 +305,51 @@
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="heading4">
-                                                                        @foreach($indicator as $key => $g)
-                                                                            @if($g->indicator_id == 4)  
-                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
-                                                                            @endif
-                                                                        @endforeach
+                                                                        <?php $__currentLoopData = $indicator; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 4): ?>  
+                                                                                <?php echo e($g->title_indi); ?> <i><?php echo e($g->title_parenthesis); ?></i>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                @foreach($questionnaire as $g)
-                                                                        @if($g->indicator_id == 4)
-                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                <?php $__currentLoopData = $questionnaire; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php if($g->indicator_id == 4): ?>
+                                                                            <tr class="collapse" id="collapse<?php echo e($g->indicator_id); ?>" aria-labelledby="heading<?php echo e($g->indicator_id); ?>" data-bs-parent="#accordionclose">
                                                                                 <td class="border p-1">
-                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    <?php echo e($g->descriptors); ?> <i><?php echo e($g->desc_parenthesis); ?></i>
                                                                                 </td>
                                                                                 <td class="border p-1">
-                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                    <select id="score-select-<?php echo e($g->id); ?>" class="border p-1" onchange="updateDescriptionAndScore(this, <?php echo e($g->id); ?>)">
                                                                                         <option value="" disabled selected>Select score</option>
-                                                                                        @foreach($g->scores as $score)
-                                                                                                <option value="{{ $score->point }}">
-                                                                                                {{ $score->score_desc }}
+                                                                                        <?php $__currentLoopData = $g->scores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $score): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                <option value="<?php echo e($score->point); ?>">
+                                                                                                <?php echo e($score->score_desc); ?>
+
                                                                                                 </option>
-                                                                                        @endforeach
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </select>
                                                                                     <!-- Container for displaying full descriptions -->
-                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                    <div id="description-container-<?php echo e($g->id); ?>" class="mt-2"></div>
                                                                                 </td>
-                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-<?php echo e($g->id); ?>"></td>
                                                                                 <td class="border p-1">
                                                                                     <div>
-                                                                                        @foreach ($g->instruction as $instruction)
-                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
-                                                                                        @endforeach
+                                                                                        <?php $__currentLoopData = $g->instruction; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $instruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                            <span><?php echo e($instruction->instruction); ?> <i><?php echo e($instruction->instruc_parenthesis); ?></i></span>
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
-                                                                                                @endforeach
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <th class="border"><?php echo e($moves->table_title); ?></th>
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($g->moves as $moves)
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                                     <td class="border"></td>
-                                                                                                @endforeach
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -354,8 +358,8 @@
                                                                                   <div class="btn btn-outline-primary">Add</div>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 4 Policy)</i></th>
@@ -367,50 +371,51 @@
                                                                 </tr>
                                                                 <tr style="cursor: pointer;" >
                                                                     <th class="border p-1" colspan="6" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="true" aria-controls="heading5">
-                                                                        @foreach($indicator as $key => $g)
-                                                                            @if($g->indicator_id == 5)  
-                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
-                                                                            @endif
-                                                                        @endforeach
+                                                                        <?php $__currentLoopData = $indicator; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($g->indicator_id == 5): ?>  
+                                                                                <?php echo e($g->title_indi); ?> <i><?php echo e($g->title_parenthesis); ?></i>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="default-according" id="accordionclose" >
-                                                                @foreach($questionnaire as $g)
-                                                                        @if($g->indicator_id == 5)
-                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                <?php $__currentLoopData = $questionnaire; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $g): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php if($g->indicator_id == 5): ?>
+                                                                            <tr class="collapse" id="collapse<?php echo e($g->indicator_id); ?>" aria-labelledby="heading<?php echo e($g->indicator_id); ?>" data-bs-parent="#accordionclose">
                                                                                 <td class="border p-1">
-                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                    <?php echo e($g->descriptors); ?> <i><?php echo e($g->desc_parenthesis); ?></i>
                                                                                 </td>
                                                                                 <td class="border p-1">
-                                                                                    <select id="score-select-{{ $g->id }}" class="border p-1" onchange="updateDescriptionAndScore(this, {{ $g->id }})">
+                                                                                    <select id="score-select-<?php echo e($g->id); ?>" class="border p-1" onchange="updateDescriptionAndScore(this, <?php echo e($g->id); ?>)">
                                                                                         <option value="" disabled selected>Select score</option>
-                                                                                        @foreach($g->scores as $score)
-                                                                                                <option value="{{ $score->point }}">
-                                                                                                {{ $score->score_desc }}
+                                                                                        <?php $__currentLoopData = $g->scores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $score): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                <option value="<?php echo e($score->point); ?>">
+                                                                                                <?php echo e($score->score_desc); ?>
+
                                                                                                 </option>
-                                                                                        @endforeach
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </select>
                                                                                     <!-- Container for displaying full descriptions -->
-                                                                                    <div id="description-container-{{ $g->id }}" class="mt-2"></div>
+                                                                                    <div id="description-container-<?php echo e($g->id); ?>" class="mt-2"></div>
                                                                                 </td>
-                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->id }}"></td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-<?php echo e($g->id); ?>"></td>
                                                                                 <td class="border p-1">
                                                                                     <div>
-                                                                                        @foreach ($g->instruction as $instruction)
-                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
-                                                                                        @endforeach
+                                                                                        <?php $__currentLoopData = $g->instruction; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $instruction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                            <span><?php echo e($instruction->instruction); ?> <i><?php echo e($instruction->instruc_parenthesis); ?></i></span>
+                                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
                                                                                             <thead>
-                                                                                                @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
-                                                                                                @endforeach
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                                                    <th class="border"><?php echo e($moves->table_title); ?></th>
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                @foreach($g->moves as $moves)
+                                                                                                <?php $__currentLoopData = $g->moves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $moves): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                                                     <td class="border"></td>
-                                                                                                @endforeach
+                                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
@@ -419,8 +424,8 @@
                                                                                   <div class="btn btn-outline-primary">Add</div>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 5 Policy)</i></th>
@@ -2815,9 +2820,9 @@
       </div>
    </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script>
   function updateDescriptionAndScore(point, scoreDesc, id) {
     console.log("Point:", point);
@@ -2833,4 +2838,5 @@ if (descriptionContainer) {
 }
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.simple.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\grip.dswd.gov.ph\resources\views/pages/gmef/gmef.blade.php ENDPATH**/ ?>
