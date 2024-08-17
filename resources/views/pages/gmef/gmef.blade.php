@@ -514,9 +514,9 @@
                                                                                     </div>
                                                                                     <div class="dt-ext table-responsive">
                                                                                         <table class="table border table-sm">
-                                                                                            <thead>
+                                                                                            <thead style="">
                                                                                                 @foreach($g->moves as $moves)
-                                                                                                    <th class="border">{{ $moves->table_title }}</th>
+                                                                                                    <th class="border" style="text-align: center;">{{ $moves->table_title }}</th>
                                                                                                 @endforeach
                                                                                             </thead>
                                                                                             <tbody>
@@ -535,7 +535,72 @@
                                                                     @endforeach
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 Policy)</i></th>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 People)</i></th>
+                                                                    <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
+                                                                    <th class="text-center border" colspan="2"></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="5"></th>
+                                                                </tr>
+                                                                <tr style="cursor: pointer;" >
+                                                                    <th  colspan="6" class="border p-1 " data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="true" aria-controls="heading6">
+                                                                        @foreach($indicator as $key => $g)
+                                                                            @if($g->indicator_id == 6)  
+                                                                                {{ $g->title_indi }} <i>{{$g->title_parenthesis}}</i>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="default-according" id="accordionclose" >
+                                                                    @foreach($questionnaire as $g)
+                                                                        @if($g->indicator_id == 6)
+                                                                            <tr class="collapse" id="collapse{{ $g->indicator_id }}" aria-labelledby="heading{{ $g->indicator_id }}" data-bs-parent="#accordionclose">
+                                                                                <td class="border p-1">
+                                                                                    {{ $g->descriptors }} <i>{{ $g->desc_parenthesis }}</i>
+                                                                                </td>
+                                                                                <td class="border p-1">
+                                                                                    <select id="score-select-{{ $g->questionnaire_id }}" class="border p-1" onchange="updateDescriptionAndScore(this.value, this.options[this.selectedIndex].text, {{$g->questionnaire_id}})">
+                                                                                        <option value="" disabled selected>Select score</option>
+                                                                                            @foreach($g->scores as $score)
+                                                                                                <option value="{{ $score->point }}">
+                                                                                                {{ $score->score_desc }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                    </select>
+                                                                                    <!-- Container for displaying full descriptions -->
+                                                                                    <div id="description-container-{{ $g->questionnaire_id }}" class="mt-2"></div>
+                                                                                </td>
+                                                                                <td class="border p-1" style="text-align: center;" id="score-points-{{ $g->questionnaire_id }}"></td>
+                                                                                <td class="border p-1">
+                                                                                    <div>
+                                                                                        @foreach ($g->instruction as $instruction)
+                                                                                            <span>{{$instruction->instruction}} <i>{{$instruction->instruc_parenthesis}}</i></span>
+                                                                                        @endforeach
+                                                                                    </div>
+                                                                                    <div class="dt-ext table-responsive">
+                                                                                        <table class="table border table-sm">
+                                                                                            <thead style="">
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <th class="border" style="text-align: center;">{{ $moves->table_title }}</th>
+                                                                                                @endforeach
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                @foreach($g->moves as $moves)
+                                                                                                    <td class="border"></td>
+                                                                                                @endforeach
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="border p-1">
+                                                                                  <div class="btn btn-outline-primary">Add</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center border" colspan="2">Sub-total GMEF Score <i>(Level 1 People)</i></th>
                                                                     <th class="text-center border" colspan="1" id="subtotalCell5">0</th>
                                                                     <th class="text-center border" colspan="2"></th>
                                                                 </tr>

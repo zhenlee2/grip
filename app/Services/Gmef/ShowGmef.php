@@ -63,22 +63,18 @@ class ShowGmef
         
         $movesByQuestionnaire = $movTitles->groupBy('gmefmov_id');
     
-    // Step 6: Merge moves and their titles
-    // $moves = $moves->map(function($move) use ($movTitlesByMov) {
-    //     $move->titles = $movTitlesByMov->get($move->mov_id, collect());
-    //     return $move;
-    // });
-   
-    $mergedData = $questionnaires->map(function($questionnaire) use ($scoresByQuestionnaire, $movesByInstruction, $movesByQuestionnaire) {
-        $scores = $scoresByQuestionnaire->get($questionnaire->questionnaire_id, collect());
-        $instruction = $movesByInstruction->get($questionnaire->questionnaire_id, collect());
-        $moves = $movesByQuestionnaire->get($questionnaire->questionnaire_id, collect());
-        $questionnaire->scores = $scores;
-        $questionnaire->instruction = $instruction;
-        $questionnaire->moves = $moves;
-    
-        return $questionnaire;
-    });
+        $mergedData = $questionnaires->map(function($questionnaire) use ($scoresByQuestionnaire, $movesByInstruction, $movesByQuestionnaire) {
+            $scores = $scoresByQuestionnaire->get($questionnaire->questionnaire_id, collect());
+            $instruction = $movesByInstruction->get($questionnaire->questionnaire_id, collect());
+            $moves = $movesByQuestionnaire->get($questionnaire->questionnaire_id, collect());
+        
+            $questionnaire->scores = $scores;
+            $questionnaire->instruction = $instruction;
+            $questionnaire->moves = $moves;
+            
+            return $questionnaire;
+        });
+        
     
 
         return [

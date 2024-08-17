@@ -105,7 +105,7 @@
         <div class="col-xl-2 col-md-4">
           <div class="icon-box">
             <i class="ri-bar-chart-box-line"></i>
-            <h3><a href="">Analitics</a></h3>
+            <h3><a href="">Analytics</a></h3>
           </div>
         </div>
         <div class="col-xl-2 col-md-4">
@@ -593,7 +593,7 @@
         <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
             <div class="member" data-aos="fade-up" data-aos-delay="100">
               <div class="member-img">
-                <img src="assets1/img/team/eval.png" class="img-fluid" alt="">
+                <img src="assets1/img/team/archie.png" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -602,8 +602,8 @@
                 </div>
               </div>
               <div class="member-info">
-                <h4>Eval Makinano</h4>
-                <span>Section Head / Planning Officer - III</span>
+                <h4>Archie Turtur</h4>
+                <span>Section Head / Project Development Officer - III</span>
               </div>
             </div>
           </div>
@@ -620,8 +620,8 @@
                 </div>
               </div>
               <div class="member-info">
-                <h4>Sheryl Lorenzo</h4>
-                <span>Administrative Assistant  - III</span>
+                <h4>Vanissa Sumampong</h4>
+                <span>Administrative Aide I</span>
               </div>
             </div>
           </div>
@@ -787,9 +787,6 @@
               </div>
             </div>
           </div>
-
-
-
         </div>
 
       </div>
