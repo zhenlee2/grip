@@ -16,10 +16,11 @@ class GmefController extends Controller
             $gmef = $showGmef->execute();
             $indicator = $gmef['indicator'];
             $questionnaire = $gmef['questionnaire'];
-            // $title = $gmef['movtitle'];
+            // $score = $gmef['score'];
             return view('pages.gmef.gmef',compact('user', 'indicator', 'questionnaire'));
         }else {
             return redirect()->route('login');
         }
     }
+
 }

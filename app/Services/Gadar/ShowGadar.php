@@ -29,8 +29,10 @@ class ShowGadar
         $data = gadar::select(
         'tbl_gadar.id', 'tbl_gadar.created_at', 'tbl_gadar.gadartime_id', 'tbl_gadar.rawresponsible_unit', 'tbl_gadar.gadcategory_id', 'tbl_gadar.gadtotal_id', 'tbl_gadar.indicator_code', 'tbl_gadar.gad_mandate', 'tbl_gadar.result_indicator', 'tbl_gadar.prev_remark', 'tbl_gadar.prev_male', 'tbl_gadar.prev_female', 'tbl_gadar.prev_budget', 'tbl_gadar.prev_totalsex', 'tbl_gadar.target_male', 'tbl_gadar.target_female', 'tbl_gadar.target_totalsex', 'tbl_gadar.pap_desc', 'tbl_gadar.pap_code', 'tbl_gadar.gad_activity', 'tbl_gadar.budget_tierone', 'tbl_gadar.budget_tiertwo', 'tbl_gadar.budget_totalamount', 'tbl_gadar.source', 'tbl_gadar.responsible_unit', 'tbl_gadar.unit',
         'tbl_gadartime.year')
+        // ->leftJoin('tbl_gadaractual', 'tbl_gadaractual.gadar_id', '=', 'tbl_gadar.id')
         ->leftjoin('tbl_gadartime', 'tbl_gadartime.id','=', 'tbl_gadar.gadartime_id')
         ->where('tbl_gadartime.year', '=', $selectedYear)
+        // ->where('tbl_gadaractual.quarter', '=', $selectedQuarter)
         ->get();
 
         foreach ($data as $key) {
@@ -42,7 +44,9 @@ class ShowGadar
                 ->first();
 
             $gadarMov = gadarmov::select('file_name', 'file_size', 'created_at', 'division', 'section')->where('gadaractual_id', $gadarActual->id ?? 0)->orderBy('tbl_gadarmov.created_at', 'asc')->get();
-
+            // echo('<pre>');
+            // print_r($gadarMov);
+            // echo('</pre>');
             $movDetails = $gadarMov->map(function($mov) {
                 return [
                     'file_name' => $mov->file_name,
@@ -52,6 +56,8 @@ class ShowGadar
                     'section' => $mov->section
                 ];
             })->toArray();
+
+            
 
             $key->quarter = $gadarActual->quarter ?? null;
             $key->verify_id = $gadarActual->verify_id ?? null;
@@ -72,6 +78,7 @@ class ShowGadar
             // $key->created_at = $gadarMov->created_at ?? null;
             // $key->division= $gadarMov->division ?? null;
             // $key->section = $gadarMov->section ?? null;
+            
 
             $division_arr = $key->responsible_unit ? json_decode($key->responsible_unit) : [];
             $section_arr = $key->unit ? json_decode($key->unit) : [];

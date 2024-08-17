@@ -17,6 +17,7 @@ class TblGmefMov extends Migration
             $table->id();
             $table->unsignedBigInteger('questionnaire_id');
             $table->text('instruction');
+            $table->text('instruc_parenthesis');
             $table->timestamps();
             $table->softDeletes();
         });

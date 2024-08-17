@@ -16,6 +16,4 @@ class gmefquestionnaire extends Model
         'descriptors',
         'desc_parenthesis',
     ];
-
-    
 }
