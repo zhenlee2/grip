@@ -510,9 +510,9 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                <img src="assets1/img/team/eval.png" class="testimonial-img" alt="">
-                <h3>Eval Makinano</h3>
-                <h4>Section Head / Planning Officer - III</h4>
+                <img src="assets1/img/team/archie.png" class="testimonial-img" alt="">
+                <h3>Archie Turtur</h3>
+                <h4>Section Head / Project Development Officer - III</h4>
                 <p>
                   <i class="bx bxs-quote-alt-left quote-icon-left"></i>
                   Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
@@ -523,9 +523,9 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                <img src="assets1/img/team/Sheryl.png" class="testimonial-img" alt="">
-                <h3>Sheryl Lorenzo</h3>
-                <h4>Administrative Assistant  - III</h4>
+                <img src="assets1/img/team/vanz.gif" class="testimonial-img" alt="">
+                <h3>Vanissa Sumampong</h3>
+                <h4>Administrative Aide - I</h4>
                 <p>
                   <i class="bx bxs-quote-alt-left quote-icon-left"></i>
                   Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
@@ -611,7 +611,7 @@
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
             <div class="member" data-aos="fade-up" data-aos-delay="100">
               <div class="member-img">
-                <img src="assets1/img/team/Sheryl.png" class="img-fluid" alt="">
+                <img src="assets1/img/team/vanz.gif" class="img-fluid" alt="">
                 <div class="social">
                   <a href=""><i class="bi bi-twitter"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
